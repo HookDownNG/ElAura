@@ -127,7 +127,9 @@ const LandingPage = () => {
                 Creators Meet
               </span>
               <span className="block text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none pt-1 mt-1">
-                <span className="text-transparent [-webkit-text-stroke:1px_#030712] opacity-80">Iconic</span>{" "}
+                <span className="text-transparent [-webkit-text-stroke:1px_#030712] opacity-80">
+                  Iconic
+                </span>{" "}
                 <span className="text-gray-950">BRANDS.</span>
               </span>
             </h1>
@@ -135,9 +137,10 @@ const LandingPage = () => {
               ElAura connects global brands with Africa's most authentic
               creatives.
             </p>
-            <div className="flex items-center gap-4">
-              <button className="get-in-touch-btn bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium flex items-center gap-3 shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5">
-                <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-300">
+            <div>
+              <button className="get-in-touch-btn flex items-center bg-green-600 hover:bg-green-700 text-white rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 p-0 overflow-hidden pr-5 sm:pr-7">
+                {/* The Left-Cap Circle: Defines the button height, flush with the edges */}
+                <span className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-lime-600 text-white shrink-0">
                   <svg
                     className="arrow-icon w-4 h-4 sm:w-5 sm:h-5"
                     fill="currentColor"
@@ -146,7 +149,11 @@ const LandingPage = () => {
                     <path d="M 3.03386 13.8507 C 2.83595 14.0498 2.51493 14.0498 2.31703 13.8507 L 0.148733 11.6692 L 0.148694 11.6681 C -0.0492089 11.469 -0.0497418 11.1466 0.148161 10.9475 L 6.08392 4.97579 C 6.40321 4.65456 6.17712 4.1053 5.72551 4.1053 H 2.26567 C 1.9855 4.1053 1.75883 3.87726 1.75883 3.59539 V 0.509907 C 1.75883 0.228041 1.9855 0 2.26567 0 H 13.4932 C 13.7733 0 14 0.228041 14 0.509907 V 11.8054 C 14 12.0873 13.7733 12.3153 13.4932 12.3153 H 10.4268 C 10.1467 12.3153 9.92001 12.0873 9.92001 11.8054 V 8.15388 C 9.92001 7.69953 9.37406 7.47207 9.05477 7.7933 L 3.03386 13.8507 Z" />
                   </svg>
                 </span>
-                Get in touch
+
+                {/* The Text Block - Placed precisely to mirror the reference image layout */}
+                <span className="ml-3 sm:ml-4 text-base sm:text-lg whitespace-nowrap">
+                  Get in touch
+                </span>
               </button>
             </div>
 
