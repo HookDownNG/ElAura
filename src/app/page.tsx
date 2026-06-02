@@ -42,6 +42,8 @@ const LandingPage = () => {
         .get-in-touch-btn:hover .arrow-icon {
           animation: arrowFly 0.7s ease-in-out;
         }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700;1,800;1,900&display=swap');
+        .font-display-italic { font-family: 'Playfair Display', Georgia, serif; font-style: italic; }
       `,
         }}
       />
@@ -114,23 +116,30 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 animate-fade-in">
-            <h1 className="text-6xl md:text-7xl font-extrabold tracking-tighter leading-none text-gray-900">
-              Africa's creators
-              <br />
-              <span className="text-green-600">meet the world.</span>
+      <section className="pt-20 md:pt-32 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+          <div className="space-y-6 md:space-y-8 animate-fade-in">
+            <h1 className="leading-none">
+              <span className="block font-display-italic text-green-600 text-5xl sm:text-6xl md:text-7xl font-black tracking-tight mb-2">
+                AuraListical
+              </span>
+              <span className="block text-gray-900 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter">
+                Creators Meet
+              </span>
+              <span className="block text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none pt-1 mt-1">
+                <span className="text-transparent [-webkit-text-stroke:1px_#030712] opacity-80">Iconic</span>{" "}
+                <span className="text-gray-950">BRANDS.</span>
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-lg leading-relaxed">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-lg leading-relaxed">
               ElAura connects global brands with Africa's most authentic
               creatives.
             </p>
             <div className="flex items-center gap-4">
-              <button className="get-in-touch-btn bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-lg font-medium flex items-center gap-3 shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-emerald-300">
+              <button className="get-in-touch-btn bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium flex items-center gap-3 shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5">
+                <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-300">
                   <svg
-                    className="arrow-icon w-5 h-5"
+                    className="arrow-icon w-4 h-4 sm:w-5 sm:h-5"
                     fill="currentColor"
                     viewBox="0 0 14 14"
                   >
@@ -142,17 +151,17 @@ const LandingPage = () => {
             </div>
 
             <div className="pt-6 border-t border-gray-100">
-              <p className="text-xs font-semibold tracking-wider text-green-700 uppercase mb-6">
+              <p className="text-xs font-semibold tracking-wider text-green-700 uppercase mb-4 md:mb-6">
                 Trusted by
               </p>
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-4 md:gap-6">
                 {[
                   { number: "500+", label: "creator partnerships" },
                   { number: "12x", label: "avg. engagement lift" },
                   { number: "94%", label: "campaign satisfaction" },
                 ].map((stat, i) => (
                   <div key={i}>
-                    <p className="text-2xl font-black text-gray-900">
+                    <p className="text-xl md:text-2xl font-black text-gray-900">
                       {stat.number}
                     </p>
                     <p className="text-xs text-gray-500">{stat.label}</p>
@@ -163,7 +172,7 @@ const LandingPage = () => {
           </div>
 
           {/* Right side animated images grid */}
-          <div className="grid grid-cols-2 gap-4 h-[550px] overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-2">
+          <div className="grid grid-cols-2 gap-4 h-[400px] md:h-[550px] overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-2">
             {/* Column 1: Moving UP */}
             <div className="space-y-4 animate-marquee-up flex flex-col">
               {[
