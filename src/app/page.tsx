@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { LandingNavbar } from "@/components/layout/landing-navbar";
+import { LandingFooter } from "@/components/layout/landing-footer";
 
 const LandingPage = () => {
   return (
@@ -48,59 +50,7 @@ const LandingPage = () => {
         }}
       />
 
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-green-100 z-50 transition-all">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer">
-            <span className="text-2xl font-black tracking-tight text-green-700">
-              ElAura
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            {[
-              "About",
-              "Services",
-              "Technology",
-              "Work",
-              "Resources",
-              "Careers",
-            ].map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                className="hover:text-green-600 transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:bg-green-500 after:transition-all"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden md:block">
-              <button className="px-5 py-2.5 text-sm whitespace-nowrap">
-                Join as Brand
-              </button>
-            </div>
-            <div className="hidden md:block">
-              <button className="get-in-touch-btn flex items-center bg-green-600 hover:bg-green-700 text-white rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 p-0 overflow-hidden pr-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-lime-600 text-white shrink-0">
-                  <svg
-                    className="arrow-icon w-2.5 h-2.5"
-                    fill="currentColor"
-                    viewBox="0 0 14 14"
-                  >
-                    <path d="M 3.03386 13.8507 C 2.83595 14.0498 2.51493 14.0498 2.31703 13.8507 L 0.148733 11.6692 L 0.148694 11.6681 C -0.0492089 11.469 -0.0497418 11.1466 0.148161 10.9475 L 6.08392 4.97579 C 6.40321 4.65456 6.17712 4.1053 5.72551 4.1053 H 2.26567 C 1.9855 4.1053 1.75883 3.87726 1.75883 3.59539 V 0.509907 C 1.75883 0.228041 1.9855 0 2.26567 0 H 13.4932 C 13.7733 0 14 0.228041 14 0.509907 V 11.8054 C 14 12.0873 13.7733 12.3153 13.4932 12.3153 H 10.4268 C 10.1467 12.3153 9.92001 12.0873 9.92001 11.8054 V 8.15388 C 9.92001 7.69953 9.37406 7.47207 9.05477 7.7933 L 3.03386 13.8507 Z" />
-                  </svg>
-                </span>
-                <span className="ml-2.5 text-sm whitespace-nowrap">
-                  Join as Creator
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <LandingNavbar />
 
       {/* Hero Section */}
       <section className="pt-30 pb-0 px-6 max-w-7xl mx-auto overflow-hidden">
@@ -139,7 +89,10 @@ const LandingPage = () => {
                   Join as Brand
                 </span>
               </button>
-              <button className="get-in-touch-btn flex items-center bg-green-600 hover:bg-green-700 text-white rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 p-0 overflow-hidden pr-4 sm:pr-5.5">
+              <Link
+                href="/creator"
+                className="get-in-touch-btn flex items-center bg-green-600 hover:bg-green-700 text-white rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 p-0 overflow-hidden pr-4 sm:pr-5.5 cursor-pointer"
+              >
                 <span className="flex items-center justify-center w-8 h-8 sm:w-9.5 sm:h-9.5 rounded-full bg-lime-600 text-white shrink-0">
                   <svg
                     className="arrow-icon w-2.5 h-2.5 sm:w-4 sm:h-4"
@@ -152,7 +105,7 @@ const LandingPage = () => {
                 <span className="ml-2.5 sm:ml-3 text-sm sm:text-base whitespace-nowrap">
                   Join as Creator
                 </span>
-              </button>
+              </Link>
             </div>
 
             <div className="pt-8 border-t border-gray-100">
@@ -201,7 +154,7 @@ const LandingPage = () => {
                       alt="African Creator"
                       width={400}
                       height={500}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-[500px] object-cover"
                       loading="eager"
                     />
                   </div>
@@ -224,7 +177,7 @@ const LandingPage = () => {
                       alt="Brand Lifestyle"
                       width={400}
                       height={500}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-[500px] object-cover"
                       loading="eager"
                     />
                   </div>
@@ -426,54 +379,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-950 text-gray-400 py-16 px-6 border-t border-gray-900">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-12">
-          <div className="col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-xl font-bold text-white tracking-tight">
-                ElAura
-              </span>
-            </div>
-            <p className="text-sm text-gray-500 max-w-xs leading-relaxed">
-              Connecting global brands with Africa's most authentic creative
-              talent. No middlemen, no bureaucracy.
-            </p>
-          </div>
-
-          {[
-            { title: "Company", links: ["Home", "About", "Careers"] },
-            {
-              title: "Platform",
-              links: ["Discovery", "Escrow Security", "Pricing"],
-            },
-            {
-              title: "Governance",
-              links: ["Platform Terms", "Creator Terms", "Privacy Policy"],
-            },
-          ].map((col, idx) => (
-            <div key={idx}>
-              <h4 className="font-semibold text-white text-sm tracking-wider uppercase mb-4">
-                {col.title}
-              </h4>
-              <ul className="space-y-2.5 text-sm">
-                {col.links.map((link) => (
-                  <li
-                    key={link}
-                    className="hover:text-green-400 transition-colors cursor-pointer"
-                  >
-                    {link}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-900 text-center text-gray-600 text-xs tracking-widest uppercase">
-          © 2026 ElAura.
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 };
