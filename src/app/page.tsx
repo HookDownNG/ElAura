@@ -106,8 +106,8 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-30 md:pt-32 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+      <section className=" md:pt-32 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
           <div className="space-y-6 md:space-y-8 animate-fade-in">
             <h1 className="leading-none">
               <span className="block font-display-italic text-green-600 text-5xl sm:text-6xl md:text-7xl font-black tracking-tight mb-2">
