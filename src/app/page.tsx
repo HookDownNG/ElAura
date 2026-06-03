@@ -106,7 +106,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-30  pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
+      <section className="pt-30 pb-0 px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
           <div className="space-y-6 md:space-y-8 animate-fade-in">
             <h1 className="leading-none">
@@ -173,8 +173,8 @@ const LandingPage = () => {
 
           {/* Right side animated images grid */}
           <div className="relative">
-            <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-16 bg-linear-to-b from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-80 bg-linear-to-t from-white via-white to-transparent z-10 pointer-events-none" />
 
             <div className="grid grid-cols-2 gap-2 overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-1.5">
               <div className="space-y-2 animate-marquee-up flex flex-col">
@@ -193,7 +193,7 @@ const LandingPage = () => {
                       alt="African Creator"
                       width={400}
                       height={500}
-                      className="w-full h-[500px] object-cover"
+                      className="w-full h-80 object-cover"
                       loading="eager"
                     />
                   </div>
@@ -216,7 +216,7 @@ const LandingPage = () => {
                       alt="Brand Lifestyle"
                       width={400}
                       height={500}
-                      className="w-full h-[500px] object-cover"
+                      className="w-full h-80 object-cover"
                       loading="eager"
                     />
                   </div>
@@ -227,9 +227,9 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Concept to Content Section */}
-      <section className="bg-green-50/40 py-24 px-6 border-t border-green-50">
-        <div className="max-w-4xl mx-auto text-center mb-20">
+      {/* --- Concept to Culture Section --- */}
+      <section className="relative z-20 -mt-16 md:-mt-24 bg-green-50/40 px-6 pt-12 pb-24 border-t border-green-50">
+        <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-gray-900 leading-tight">
             From concept to culture — we put African creators at the center of
             your brand story.
@@ -240,33 +240,37 @@ const LandingPage = () => {
           {[
             {
               title: "Creative Strategy",
-              desc: "Campaigns built around real identity — not templates. We help brands tell stories that actually resonate.",
+              desc: "Campaigns built around real identity — not templates. Discover creators who tell authentic stories that seamlessly connect with your target audience.",
               metric: "91% higher view-rates",
             },
             {
-              title: "Precision Media",
-              desc: "We place your message where it actually matters. No budget waste, no blind spending — just targeted reach.",
+              title: "Full-Spectrum Discovery",
+              desc: "From hyper-local micro-influencers to mega cultural icons. Filter our network by niche, reach, and location to find your perfect match instantly.",
               metric: "70% lift in active CTR",
             },
             {
-              title: "Algorithmic Commerce",
-              desc: "Turn audience trust into revenue. Transparent performance data so you see exactly what's working.",
-              metric: "3.3x avg. ROI",
+              title: "Secure Escrow Payments",
+              desc: "Protect your campaign budget entirely. Funds are held safely in escrow and released to creators only after deliverables are fully approved.",
+              metric: "100% secure milestone tracking",
             },
           ].map((item, i) => (
             <div
               key={i}
               className="bg-white rounded-3xl p-8 border border-green-100/60 shadow-sm hover:shadow-xl hover:border-green-300 transition-all group duration-300"
             >
+              {/* Keep the numbers: Simple, editorial, and clean */}
               <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 font-bold group-hover:bg-green-600 group-hover:text-white transition-colors">
                 0{i + 1}
               </div>
+
               <h3 className="text-2xl font-bold mb-3 text-gray-900">
                 {item.title}
               </h3>
+
               <p className="text-gray-600 leading-relaxed text-sm mb-6">
                 {item.desc}
               </p>
+
               <div className="text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 py-1.5 px-3 rounded-md inline-block">
                 {item.metric}
               </div>
@@ -275,16 +279,15 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Bespoke Solutions (Horizontally Animated Infinite Marquees) */}
+      {/* --- Marketplace Capabilities (Horizontally Animated Infinite Marquees) --- */}
       <section className="bg-gray-900 text-white py-24 overflow-hidden relative">
         <div className="max-w-4xl mx-auto text-center mb-16 px-6">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
             Built for creators, backed by data.
           </h2>
           <p className="text-gray-400 text-lg">
-            From brief to pay — everything runs on{" "}
-            <span className="text-green-400 font-semibold">Waves</span>, our
-            end-to-end campaign engine.
+            From discovery to secure payout — everything runs on our end-to-end
+            infrastructure.
           </p>
         </div>
 
@@ -292,18 +295,18 @@ const LandingPage = () => {
         <div className="flex overflow-hidden mb-4 relative w-full mask-gradient">
           <div className="flex gap-4 whitespace-nowrap animate-marquee-left py-2">
             {[
-              "Content feedback",
-              "Live campaign reporting",
-              "Creator payments",
-              "Content production",
-              "Content feedback",
-              "Live campaign reporting",
-              "Creator payments",
-              "Content production",
-              "Content feedback",
-              "Live campaign reporting",
-              "Creator payments",
-              "Content production",
+              "Escrow protection",
+              "Influencer discovery",
+              "Direct connection",
+              "Niche filtering",
+              "Escrow protection",
+              "Influencer discovery",
+              "Direct connection",
+              "Niche filtering",
+              "Escrow protection",
+              "Influencer discovery",
+              "Direct connection",
+              "Niche filtering",
             ].map((text, i) => (
               <div
                 key={i}
@@ -319,21 +322,21 @@ const LandingPage = () => {
         <div className="flex overflow-hidden relative w-full mask-gradient">
           <div className="flex gap-4 whitespace-nowrap animate-marquee-right py-2">
             {[
-              "Creator affiliate",
-              "Campaign measurement",
-              "End-to-end campaigns",
-              "Creator contracting",
-              "Creator amplification",
-              "Creator affiliate",
-              "Campaign measurement",
-              "End-to-end campaigns",
-              "Creator contracting",
-              "Creator amplification",
-              "Creator affiliate",
-              "Campaign measurement",
-              "End-to-end campaigns",
-              "Creator contracting",
-              "Creator amplification",
+              "Verified metrics",
+              "Secure milestones",
+              "Direct chat pipeline",
+              "Talent curation",
+              "Full-spectrum reach",
+              "Verified metrics",
+              "Secure milestones",
+              "Direct chat pipeline",
+              "Talent curation",
+              "Full-spectrum reach",
+              "Verified metrics",
+              "Secure milestones",
+              "Direct chat pipeline",
+              "Talent curation",
+              "Full-spectrum reach",
             ].map((text, i) => (
               <div
                 key={i}
@@ -346,30 +349,73 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Trust Bar */}
-      <section className="py-24 px-6 text-center max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase mb-8 border border-green-200">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-          By creators, for brands
+      {/* --- Trust & Scale Bar --- */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 border-t border-gray-100 bg-white">
+        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 text-gray-900">
+            The bridge between African talent and global ambition.
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+            We handle the infrastructure — verified discovery, secure escrow,
+            and direct communication — so you can build authentic partnerships
+            that actually perform.
+          </p>
         </div>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-gray-900">
-          The bridge between African talent and global ambition.
-        </h2>
-        <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-          We handle the complexity — contracts, payments, production, compliance
-          — so you get authentic campaigns that actually perform.
-        </p>
-      </section>
 
-      {/* CTA Section */}
+        {/* High-Trust Infrastructure Metrics — Tailored for Mobile Responsiveness */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 mt-12 md:mt-16 border-t border-b border-gray-100 py-10">
+          {[
+            {
+              metric: "100%",
+              label: "Verified African Creators",
+              sub: "No bot accounts, no fake engagement stats.",
+            },
+            {
+              metric: "10%",
+              label: "Flat Platform Fee",
+              sub: "Simple, transparent pricing added at checkout. No hidden agency cuts.",
+            },
+            {
+              metric: "Escrowed",
+              label: "Payment Pipeline",
+              sub: "Capital is only released when milestones are met.",
+            },
+            {
+              metric: "Multi-Tier",
+              label: "Talent Network",
+              sub: "Access from local micro-niches to mega icons.",
+            },
+          ].map((item, index) => (
+            <div key={index} className="text-center px-2 sm:px-4">
+              <span className="block text-4xl font-black text-green-600 mb-2">
+                {item.metric}
+              </span>
+              <h4 className="text-base font-bold text-gray-900 mb-1">
+                {item.label}
+              </h4>
+              <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto">
+                {item.sub}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* --- CTA Section --- */}
       <section className="bg-gray-950 text-white py-24 px-6 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.15),transparent)] pointer-events-none" />
-        <h2 className="text-5xl md:text-6xl font-black mb-8 tracking-tight">
-          Ready to work with Africa's best creators?
-        </h2>
-        <button className="bg-white text-green-950 px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:bg-green-50 hover:scale-[1.03] transition-all">
-          Start a campaign →
-        </button>
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
+            Ready to tap into Africa's creator economy?
+          </h2>
+          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+            Create a free brand account, filter our network, and secure your
+            first partnership today.
+          </p>
+          <button className="bg-white text-green-950 px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:bg-green-50 hover:scale-[1.03] transition-all">
+            Find Creators Now →
+          </button>
+        </div>
       </section>
 
       {/* Footer */}
@@ -377,9 +423,6 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-12">
           <div className="col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-7 h-7 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">
-                E
-              </div>
               <span className="text-xl font-bold text-white tracking-tight">
                 ElAura
               </span>
@@ -393,8 +436,8 @@ const LandingPage = () => {
           {[
             { title: "Company", links: ["Home", "About", "Careers"] },
             {
-              title: "Framework",
-              links: ["Services", "Technology", "Case Studies"],
+              title: "Platform",
+              links: ["Discovery", "Escrow Security", "Pricing"],
             },
             {
               title: "Governance",
@@ -420,7 +463,7 @@ const LandingPage = () => {
         </div>
 
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-900 text-center text-gray-600 text-xs tracking-widest uppercase">
-          © 2026 ElAura. Engineered precisely.
+          © 2026 ElAura.
         </div>
       </footer>
     </div>
