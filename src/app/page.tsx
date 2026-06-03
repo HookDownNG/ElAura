@@ -114,7 +114,7 @@ const LandingPage = () => {
                 AuraListic
               </span>
               <span className="block text-gray-900 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter">
-                Creators Meets
+                Creators Meet
               </span>
               <span className="block text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none pt-1 mt-1">
                 <span className="text-transparent [-webkit-text-stroke:1px_#030712] opacity-80">
@@ -147,21 +147,24 @@ const LandingPage = () => {
               </button>
             </div>
 
-            <div className="pt-6 border-t border-gray-100">
-              <p className="text-xs font-semibold tracking-wider text-green-700 uppercase mb-4 md:mb-6">
-                Trusted by
+            <div className="pt-8 border-t border-gray-100">
+              <p className="text-xs font-semibold tracking-widest text-green-600/70 uppercase mb-6">
+                By the numbers
               </p>
-              <div className="grid grid-cols-3 gap-4 md:gap-6">
+              <div className="flex flex-wrap gap-x-8 gap-y-4">
                 {[
-                  { number: "500+", label: "creator partnerships" },
+                  { number: "50+", label: "creator partnerships" },
                   { number: "12x", label: "avg. engagement lift" },
                   { number: "94%", label: "campaign satisfaction" },
                 ].map((stat, i) => (
-                  <div key={i}>
-                    <p className="text-xl md:text-2xl font-black text-gray-900">
+                  <div key={i} className="relative pl-5">
+                    <span className="absolute left-0 top-2 w-2 h-2 rounded-full bg-green-500/30" />
+                    <p className="text-2xl md:text-3xl font-black text-green-700 leading-none mb-0.5">
                       {stat.number}
                     </p>
-                    <p className="text-xs text-gray-500">{stat.label}</p>
+                    <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest">
+                      {stat.label}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -169,55 +172,54 @@ const LandingPage = () => {
           </div>
 
           {/* Right side animated images grid */}
-          <div className="grid grid-cols-2 gap-4 overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-2">
-            {/* Column 1: Moving UP */}
-            <div className="space-y-4 animate-marquee-up flex flex-col">
-              {[
-                "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-                // Clones for loop continuity
-                "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-              ].map((src, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl overflow-hidden shadow-md border border-white"
-                >
-                  <Image
-                    src={src}
-                    alt="African Creator"
-                    width={400}
-                    height={500}
-                    className="w-full h-64 object-cover"
-                    unoptimized
-                  />
-                </div>
-              ))}
-            </div>
+          <div className="relative">
+            <div className="absolute top-0 left-0 right-0 h-16  from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-40  from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-            {/* Column 2: Moving DOWN */}
-            <div className="space-y-4 animate-marquee-down flex flex-col">
-              {[
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=400&q=80",
-                // Clones for loop continuity
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=400&q=80",
-              ].map((src, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl overflow-hidden shadow-md border border-white"
-                >
-                  <Image
-                    src={src}
-                    alt="Brand Lifestyle"
-                    width={400}
-                    height={500}
-                    className="w-full h-64 object-cover"
-                    unoptimized
-                  />
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-2 overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-1.5">
+              <div className="space-y-2 animate-marquee-up flex flex-col">
+                {[
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1490.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1486.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1496.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1493.webp",
+                ].map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl overflow-hidden shadow-md border border-white"
+                  >
+                    <Image
+                      src={src}
+                      alt="African Creator"
+                      width={400}
+                      height={500}
+                      className="w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-2 animate-marquee-down flex flex-col">
+                {[
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1487.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1492.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
+                ].map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl overflow-hidden shadow-md border border-white"
+                  >
+                    <Image
+                      src={src}
+                      alt="Brand Lifestyle"
+                      width={400}
+                      height={500}
+                      className="w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
