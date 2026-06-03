@@ -202,7 +202,7 @@ const LandingPage = () => {
 
               <div className="space-y-2 animate-marquee-down flex flex-col">
                 {[
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1487.webp",
+                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1490.webp",
                   "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
                   "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1492.webp",
                   "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
