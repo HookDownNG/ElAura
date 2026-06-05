@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { LandingNavbar } from "@/components/layout/landing-navbar";
 import { LandingFooter } from "@/components/layout/landing-footer";
 import {
@@ -33,7 +34,7 @@ const categories = [
 const creators = [
   {
     name: "Amara Okafor",
-    handle: "AmaraOkafor",
+    user_name: "AmaraOkafor",
     image: showcaseImages[0],
     views: "470.0k",
     rating: 4.0,
@@ -43,7 +44,7 @@ const creators = [
   },
   {
     name: "Kwame Mensah",
-    handle: "KwameM",
+    user_name: "KwameM",
     image: showcaseImages[1],
     views: "6.6k",
     rating: 5.0,
@@ -53,7 +54,7 @@ const creators = [
   },
   {
     name: "Zuri Adebayo",
-    handle: "ZuriAdebayo",
+    user_name: "ZuriAdebayo",
     image: showcaseImages[2],
     type: "UGC",
     rating: 4.9,
@@ -63,7 +64,7 @@ const creators = [
   },
   {
     name: "Thabo Ndlovu",
-    handle: "ThaboNdlovu",
+    user_name: "ThaboNdlovu",
     image: showcaseImages[3],
     type: "UGC",
     rating: 5.0,
@@ -187,6 +188,40 @@ function FadeInSection({
 
 export default function CreatorPage() {
   const [username, setUsername] = React.useState("");
+  const [claimLoading, setClaimLoading] = React.useState(false);
+  const [claimError, setClaimError] = React.useState<string | null>(null);
+  const router = useRouter();
+
+  function sanitizeUsername(raw: string) {
+    return raw.toLowerCase().replace(/[^a-z0-9_]/g, "");
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setClaimError(null);
+    setUsername(sanitizeUsername(e.target.value));
+  }
+
+  async function handleClaim() {
+    if (!username.trim()) return;
+    setClaimLoading(true);
+    setClaimError(null);
+
+    try {
+      const res = await fetch(`/api/check-handle?user_name=${encodeURIComponent(username)}`);
+      const data = await res.json();
+
+      if (!data.available) {
+        setClaimError("This username is already taken.");
+        setClaimLoading(false);
+        return;
+      }
+
+      router.push(`/join?user_name=${encodeURIComponent(username)}`);
+    } catch {
+      setClaimError("Something went wrong. Please try again.");
+      setClaimLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white font-sans text-surface-900 antialiased overflow-x-hidden">
@@ -228,14 +263,29 @@ export default function CreatorPage() {
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={handleInputChange}
+                onKeyDown={(e) => e.key === "Enter" && handleClaim()}
                 placeholder="yourname"
                 className="flex-1 py-3.5 pr-2 text-sm outline-none text-surface-900 placeholder:text-surface-300 min-w-0 bg-transparent"
               />
-              <button className="m-1.5 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-full transition-colors whitespace-nowrap shrink-0">
-                Claim
+              <button
+                onClick={handleClaim}
+                disabled={claimLoading || !username.trim()}
+                className="m-1.5 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 disabled:bg-brand-300 text-white text-sm font-semibold rounded-full transition-colors whitespace-nowrap shrink-0"
+              >
+                {claimLoading ? (
+                  <span className="flex items-center gap-1.5">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Checking
+                  </span>
+                ) : (
+                  "Claim"
+                )}
               </button>
             </div>
+            {claimError && (
+              <p className="mt-3 text-sm text-red-500 text-center">{claimError}</p>
+            )}
           </div>
 
           <div className="mt-10 flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm text-surface-500">
@@ -317,7 +367,7 @@ export default function CreatorPage() {
           {/* Creator Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {creators.map((c) => (
-              <div key={c.handle} className="group cursor-pointer">
+              <div key={c.user_name} className="group cursor-pointer">
                 <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-3">
                   <Image
                     src={c.image}

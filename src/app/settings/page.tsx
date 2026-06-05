@@ -8,13 +8,13 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { createClient } from "@/lib/supabase"
-import type { Profile, CreatorProfile, BrandProfile } from "@/types"
+import type { Profile, Creator, Brand } from "@/types"
 import { useToast } from "@/components/ui/toast"
 
 export default function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [creatorProfile, setCreatorProfile] = useState<CreatorProfile | null>(null)
-  const [brandProfile, setBrandProfile] = useState<BrandProfile | null>(null)
+  const [creatorProfile, setCreatorProfile] = useState<Creator | null>(null)
+  const [brandProfile, setBrandProfile] = useState<Brand | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const router = useRouter()
@@ -33,11 +33,11 @@ export default function SettingsPage() {
 
       if (prof.role === "creator") {
         const { data: cp } = await supabase
-          .from("creator_profiles").select("*").eq("id", user.id).single()
+          .from("creators").select("*").eq("id", user.id).single()
         setCreatorProfile(cp)
       } else if (prof.role === "brand") {
         const { data: bp } = await supabase
-          .from("brand_profiles").select("*").eq("id", user.id).single()
+          .from("brands").select("*").eq("id", user.id).single()
         setBrandProfile(bp)
       }
 
@@ -73,7 +73,7 @@ export default function SettingsPage() {
       const bankCode = formData.get("bank_code") as string
       const phone = formData.get("phone") as string
 
-      const { error } = await supabase.from("creator_profiles").upsert({
+      const { error } = await supabase.from("creators").upsert({
         id: user.id,
         bank_account_number: bankAccountNumber || null,
         bank_name: bankName || null,
@@ -91,7 +91,7 @@ export default function SettingsPage() {
       const website = formData.get("website") as string
       const industry = formData.get("industry") as string
 
-      const { error } = await supabase.from("brand_profiles").upsert({
+      const { error } = await supabase.from("brands").upsert({
         id: user.id,
         company_name: companyName || null,
         company_description: companyDescription || null,

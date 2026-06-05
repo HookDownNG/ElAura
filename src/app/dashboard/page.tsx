@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { DollarSign, FileText, Users, TrendingUp, Plus, ExternalLink } from "lucide-react"
+import { DollarSign, FileText, Users, TrendingUp, Plus, ExternalLink, Wallet, Briefcase } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -68,6 +68,7 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        {/* Header with profile link */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -75,16 +76,47 @@ export default function DashboardPage() {
               Welcome back, {profile?.full_name}
             </p>
           </div>
-          {profile?.role === "brand" && (
+          {profile?.role === "brand" ? (
             <Link href="/campaigns/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
                 New Campaign
               </Button>
             </Link>
-          )}
+          ) : profile?.user_name ? (
+            <a
+              href={`https://elaura.com/${profile.user_name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors"
+            >
+              <ExternalLink className="h-4 w-4" />
+              elaura.com/{profile.user_name}
+            </a>
+          ) : null}
         </div>
 
+        {/* Payout Wallet Banner (creator only) */}
+        {profile?.role === "creator" && (
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                <Wallet className="h-5 w-5 text-amber-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-amber-900">Set up your Payout Wallet</p>
+                <p className="text-xs text-amber-700">Link your Nigerian bank account to receive escrowed funds securely.</p>
+              </div>
+            </div>
+            <Link href="/settings">
+              <Button variant="outline" size="sm" className="shrink-0 border-amber-300 text-amber-800 hover:bg-amber-100">
+                Set Up
+              </Button>
+            </Link>
+          </div>
+        )}
+
+        {/* Stats Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -236,6 +268,56 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Brand Brief Matching Panel (creator only) */}
+        {profile?.role === "creator" && (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Brand Brief Matching Panel</CardTitle>
+                <CardDescription>Available campaigns that match your niche</CardDescription>
+              </div>
+              <Briefcase className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 w-full" />)}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {campaigns.filter(c => c.status === "active").length === 0 ? (
+                    <div className="text-center py-8">
+                      <Briefcase className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-sm text-muted-foreground">No matching campaigns yet</p>
+                      <p className="text-xs text-muted-foreground mt-1">Check back soon for new brand briefs.</p>
+                    </div>
+                  ) : (
+                    campaigns.filter(c => c.status === "active").slice(0, 5).map((camp) => (
+                      <Link key={camp.id} href={`/campaigns/${camp.id}`}>
+                        <div className="flex items-center justify-between rounded-lg border border-border p-4 hover:border-brand-200 transition-colors cursor-pointer">
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">{camp.title}</p>
+                            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{camp.description}</p>
+                          </div>
+                          <div className="text-right shrink-0 ml-4">
+                            <p className="text-sm font-semibold">{formatCurrency(Number(camp.budget))}</p>
+                            <p className="text-xs text-muted-foreground">{formatDate(camp.deadline)}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                  <Link href="/campaigns">
+                    <Button variant="outline" className="w-full mt-2">
+                      View All Campaigns
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </DashboardLayout>
   )

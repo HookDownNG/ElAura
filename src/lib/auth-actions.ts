@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
+import type { AudienceTier } from "@/types"
 
 export async function signUpWithEmail(formData: FormData) {
   const supabase = await createServerSupabaseClient()
@@ -87,6 +88,37 @@ export async function updateProfile(formData: FormData) {
     full_name: fullName,
     role,
     updated_at: new Date().toISOString(),
+  })
+
+  if (error) return { error: error.message }
+
+  revalidatePath("/", "layout")
+  redirect("/dashboard")
+}
+
+export async function saveStorefront(formData: FormData) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: "Not authenticated" }
+
+  const userName = formData.get("user_name") as string
+  const nichesRaw = formData.get("niches") as string
+  const audienceTier = formData.get("audience_tier") as AudienceTier
+
+  let niches: string[] = []
+  try {
+    niches = JSON.parse(nichesRaw)
+  } catch {
+    return { error: "Invalid niches format" }
+  }
+
+  const { error } = await supabase.from("creators").upsert({
+    id: user.id,
+    full_name: user.user_metadata?.full_name ?? null,
+    user_name: userName,
+    niches,
+    audience_tier: audienceTier,
   })
 
   if (error) return { error: error.message }

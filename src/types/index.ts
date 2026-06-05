@@ -8,21 +8,31 @@ export type ApplicationStatus = "pending" | "accepted" | "rejected"
 
 export interface Profile {
   id: string
+  email: string | null
   full_name: string | null
   avatar_url: string | null
   role: UserRole | null
+  user_name: string | null
   created_at: string
 }
 
-export interface CreatorProfile {
+export type AudienceTier = "nano" | "micro" | "macro" | "mega"
+
+export interface Creator {
   id: string
+  full_name: string | null
+  user_name: string | null
   bank_account_number: string | null
   bank_name: string | null
   bank_code: string | null
   phone: string | null
+  niches: string[] | null
+  audience_tier: AudienceTier | null
+  created_at: string
+  updated_at: string
 }
 
-export interface BrandProfile {
+export interface Brand {
   id: string
   company_name: string | null
   company_description: string | null
