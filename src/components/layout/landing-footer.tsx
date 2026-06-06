@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const footerColumns = [
   {
     title: "Company",
@@ -19,6 +21,7 @@ export function LandingFooter() {
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-12">
         <div className="col-span-2">
           <div className="flex items-center gap-3 mb-6">
+            <Image src="/icon.png" alt="ElAura" width={28} height={28} className="rounded-lg brightness-[10] saturate-0" />
             <span className="text-xl font-bold text-white tracking-tight">
               ElAura
             </span>
