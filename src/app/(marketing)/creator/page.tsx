@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 
 import {
   Handshake,
@@ -206,12 +207,14 @@ export default function CreatorPage() {
     setClaimError(null);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/check-handle?user_name=${encodeURIComponent(username)}`,
-      );
-      const data = await res.json();
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("creators")
+        .select("user_name")
+        .eq("user_name", username)
+        .maybeSingle();
 
-      if (!data.available) {
+      if (data) {
         setClaimError("This username is already taken.");
         setClaimLoading(false);
         return;

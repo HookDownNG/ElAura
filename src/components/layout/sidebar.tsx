@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -62,6 +63,7 @@ export function Sidebar({ role }: SidebarProps) {
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card">
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center gap-2 border-b border-border px-6">
+          <Image src="/icon.png" alt="ElAura" width={22} height={22} className="rounded-md" />
           <span className="text-lg font-bold text-primary">ElAura</span>
         </div>
 
