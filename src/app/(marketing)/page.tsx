@@ -74,7 +74,10 @@ const LandingPage = () => {
               creatives.
             </p>
             <div className="flex flex-row flex-wrap gap-3">
-              <button className="flex items-center bg-white text-green-700 border-2 border-green-600 rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 hover:bg-green-50 p-0 overflow-hidden pr-4 sm:pr-5.5">
+              <Link
+                href="/creator?role=brand"
+                className="flex items-center bg-white text-green-700 border-2 border-green-600 rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 hover:bg-green-50 p-0 overflow-hidden pr-4 sm:pr-5.5"
+              >
                 <span className="flex items-center justify-center w-8 h-8 sm:w-9.5 sm:h-9.5 rounded-full bg-green-600 text-white shrink-0">
                   <svg
                     className="w-2.5 h-2.5 sm:w-4 sm:h-4"
@@ -87,12 +90,12 @@ const LandingPage = () => {
                 <span className="ml-2.5 sm:ml-3 text-sm sm:text-base whitespace-nowrap">
                   Join as Brand
                 </span>
-              </button>
+              </Link>
               <Link
-                href="/creator"
+                href="/creator?role=creator"
                 className="get-in-touch-btn flex items-center bg-green-600 hover:bg-green-700 text-white rounded-full font-medium shadow-lg shadow-green-100 transition-all hover:-translate-y-0.5 p-0 overflow-hidden pr-4 sm:pr-5.5 cursor-pointer"
               >
-                <span className="flex items-center justify-center w-8 h-8 sm:w-9.5 sm:h-9.5 rounded-full bg-lime-600 text-white shrink-0">
+                <span className="flex items-center justify-center w-8 h-8 sm:w-9.5 sm:h-9.5 rounded-full bg-green-600 text-white shrink-0">
                   <svg
                     className="arrow-icon w-2.5 h-2.5 sm:w-4 sm:h-4"
                     fill="currentColor"
@@ -146,14 +149,13 @@ const LandingPage = () => {
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-[500px]"
                   >
                     <Image
                       src={src}
                       alt="African Creator"
-                      width={400}
-                      height={500}
-                      className="w-full h-[500px] object-cover"
+                      fill
+                      className="object-cover"
                       loading="eager"
                     />
                   </div>
@@ -169,14 +171,13 @@ const LandingPage = () => {
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-[500px]"
                   >
                     <Image
                       src={src}
                       alt="Brand Lifestyle"
-                      width={400}
-                      height={500}
-                      className="w-full h-[500px] object-cover"
+                      fill
+                      className="object-cover"
                       loading="eager"
                     />
                   </div>

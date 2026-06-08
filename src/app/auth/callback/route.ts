@@ -12,18 +12,49 @@ export async function GET(request: Request) {
 
     if (!error) {
       const { data: { user } } = await supabase.auth.getUser()
+      let role = "creator"
 
-      if (user && state && /^[a-z0-9_]+$/.test(state)) {
-        await supabase.from("profiles").upsert({
-          id: user.id,
-          user_name: state,
-          full_name: user.user_metadata?.full_name ?? null,
-          avatar_url: user.user_metadata?.avatar_url ?? null,
-          updated_at: new Date().toISOString(),
-        })
+      if (user && state) {
+        let userName = state
+
+        if (state.includes(":")) {
+          const colonIndex = state.indexOf(":")
+          role = state.substring(0, colonIndex)
+          userName = state.substring(colonIndex + 1)
+        }
+
+        const validRoles = ["creator", "brand"]
+        if (!validRoles.includes(role)) role = "creator"
+
+        if (/^[a-z0-9_]+$/.test(userName)) {
+          await supabase.from("profiles").upsert({
+            id: user.id,
+            user_name: userName,
+            role,
+            full_name: user.user_metadata?.full_name ?? null,
+            avatar_url: user.user_metadata?.avatar_url ?? null,
+            updated_at: new Date().toISOString(),
+          })
+
+          if (role === "creator") {
+            await supabase.from("creators").upsert({
+              id: user.id,
+              full_name: user.user_metadata?.full_name ?? null,
+              user_name: userName,
+            })
+          } else if (role === "brand") {
+            await supabase.from("brands").upsert({
+              id: user.id,
+              company_name: user.user_metadata?.full_name ?? null,
+            })
+          }
+        }
       }
 
-      return NextResponse.redirect(`${origin}/onboarding`)
+      const redirectPath = role === "creator"
+        ? `/creator/onboarding?role=${role}`
+        : `/onboarding?role=${role}`
+      return NextResponse.redirect(`${origin}${redirectPath}`)
     }
   }
 

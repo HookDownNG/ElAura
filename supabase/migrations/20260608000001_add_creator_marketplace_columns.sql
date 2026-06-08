@@ -1,0 +1,12 @@
+ALTER TABLE IF EXISTS public.creators
+  ADD COLUMN IF NOT EXISTS bio TEXT,
+  ADD COLUMN IF NOT EXISTS social_platforms JSONB DEFAULT '[]',
+  ADD COLUMN IF NOT EXISTS audience_locations JSONB DEFAULT '[]',
+  ADD COLUMN IF NOT EXISTS content_language TEXT,
+  ADD COLUMN IF NOT EXISTS audience_demographic TEXT,
+  ADD COLUMN IF NOT EXISTS packages JSONB DEFAULT '[]',
+  ADD COLUMN IF NOT EXISTS turnaround_days INTEGER,
+  ADD COLUMN IF NOT EXISTS usage_rights TEXT,
+  ADD COLUMN IF NOT EXISTS portfolio_urls JSONB DEFAULT '[]',
+  ADD COLUMN IF NOT EXISTS payout_method TEXT,
+  ADD COLUMN IF NOT EXISTS payout_currency TEXT DEFAULT 'NGN';

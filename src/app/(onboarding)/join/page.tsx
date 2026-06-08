@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase"
 function JoinContent() {
   const searchParams = useSearchParams()
   const user_name = searchParams.get("user_name") || ""
+  const role = searchParams.get("role") || "creator"
   const router = useRouter()
   const supabase = createClient()
   const [loading, setLoading] = useState(false)
@@ -45,8 +46,8 @@ function JoinContent() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-        state: user_name,
+        redirectTo: `${window.location.origin}/auth/callback?role=${encodeURIComponent(role)}`,
+        state: `${role}:${user_name}`,
       } as never,
     })
     if (error) {

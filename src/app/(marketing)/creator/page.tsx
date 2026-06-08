@@ -190,7 +190,13 @@ export default function CreatorPage() {
   const [username, setUsername] = React.useState("");
   const [claimLoading, setClaimLoading] = React.useState(false);
   const [claimError, setClaimError] = React.useState<string | null>(null);
+  const [role, setRole] = React.useState("creator");
   const router = useRouter();
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setRole(params.get("role") || "creator");
+  }, []);
 
   function sanitizeUsername(raw: string) {
     return raw.toLowerCase().replace(/[^a-z0-9_]/g, "");
@@ -220,7 +226,7 @@ export default function CreatorPage() {
         return;
       }
 
-      router.push(`/join?user_name=${encodeURIComponent(username)}`);
+      router.push(`/join?user_name=${encodeURIComponent(username)}&role=${encodeURIComponent(role)}`);
     } catch {
       setClaimError("Something went wrong. Please try again.");
       setClaimLoading(false);
@@ -324,9 +330,8 @@ export default function CreatorPage() {
                   <Image
                     src={src}
                     alt="Creator showcase"
-                    width={220}
-                    height={390}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -378,9 +383,8 @@ export default function CreatorPage() {
                   <Image
                     src={c.image}
                     alt={c.name}
-                    width={400}
-                    height={500}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
 
