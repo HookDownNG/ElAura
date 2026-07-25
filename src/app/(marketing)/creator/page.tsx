@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 
 const showcaseImages = [
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1490.webp",
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1486.webp",
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1496.webp",
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1493.webp",
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
-  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1492.webp",
+  "/images/landing/IMG_1490.webp",
+  "/images/landing/IMG_1486.webp",
+  "/images/landing/IMG_1496.webp",
+  "/images/landing/IMG_1493.webp",
+  "/images/landing/IMG_1488.webp",
+  "/images/landing/IMG_1492.webp",
 ];
 
 const categories = [
@@ -325,7 +325,7 @@ export default function CreatorPage() {
               {showcaseImages.map((src, idx) => (
                 <div
                   key={idx}
-                  className="relative shrink-0 w-[200px] sm:w-[220px] aspect-[9/16] rounded-3xl overflow-hidden shadow-lg border border-brand-100 snap-center group cursor-pointer"
+                  className="relative shrink-0 w-[200px] sm:w-[220px] h-[355px] sm:h-[391px] aspect-[9/16] rounded-3xl overflow-hidden shadow-lg border border-brand-100 snap-center group cursor-pointer"
                 >
                   <Image
                     src={src}
@@ -379,7 +379,7 @@ export default function CreatorPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {creators.map((c) => (
               <div key={c.user_name} className="group cursor-pointer">
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-3">
+                <div className="relative w-full h-[300px] aspect-[4/5] rounded-2xl overflow-hidden mb-3">
                   <Image
                     src={c.image}
                     alt={c.name}

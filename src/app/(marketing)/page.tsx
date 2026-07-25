@@ -146,7 +146,7 @@ const LandingPage = () => {
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-h-125"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 w-full h-[500px] min-h-[500px] shrink-0"
                   >
                     <Image
                       src={src}
@@ -168,7 +168,7 @@ const LandingPage = () => {
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-125]"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 w-full h-[500px] min-h-[500px] shrink-0"
                   >
                     <Image
                       src={src}
