@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 const navLinks = [
   "About",
@@ -14,10 +15,8 @@ export function LandingNavbar() {
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-brand-100 z-50 transition-all">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3 group cursor-pointer">
-          <Link
-            href="/"
-            className="text-2xl font-black tracking-tight text-brand-700"
-          >
+          <Link href="/" className="flex items-center gap-2 text-2xl font-black tracking-tight text-brand-700">
+            <Image src="/icon.png" alt="ElAura" width={28} height={28} className="rounded-lg" />
             ElAura
           </Link>
         </div>

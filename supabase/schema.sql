@@ -24,6 +24,17 @@ CREATE TABLE IF NOT EXISTS public.creators (
   phone TEXT,
   niches TEXT[] DEFAULT '{}',
   audience_tier TEXT CHECK (audience_tier IN ('nano', 'micro', 'macro', 'mega')),
+  bio TEXT,
+  social_platforms JSONB DEFAULT '[]',
+  audience_locations JSONB DEFAULT '[]',
+  content_language TEXT,
+  audience_demographic TEXT,
+  packages JSONB DEFAULT '[]',
+  turnaround_days INTEGER,
+  usage_rights TEXT,
+  portfolio_urls JSONB DEFAULT '[]',
+  payout_method TEXT,
+  payout_currency TEXT DEFAULT 'NGN',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

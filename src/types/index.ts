@@ -18,6 +18,22 @@ export interface Profile {
 
 export type AudienceTier = "nano" | "micro" | "macro" | "mega"
 
+export interface SocialPlatform {
+  platform: "tiktok" | "instagram" | "youtube" | "x"
+  handle: string
+}
+
+export interface AudienceLocation {
+  country: string
+  city: string
+}
+
+export interface CreatorPackage {
+  type: "tiktok_reel" | "instagram_carousel" | "youtube_video" | "custom"
+  label: string
+  price: number
+}
+
 export interface Creator {
   id: string
   full_name: string | null
@@ -28,6 +44,17 @@ export interface Creator {
   phone: string | null
   niches: string[] | null
   audience_tier: AudienceTier | null
+  bio: string | null
+  social_platforms: SocialPlatform[] | null
+  audience_locations: AudienceLocation[] | null
+  content_language: string | null
+  audience_demographic: string | null
+  packages: CreatorPackage[] | null
+  turnaround_days: number | null
+  usage_rights: string | null
+  portfolio_urls: string[] | null
+  payout_method: string | null
+  payout_currency: string | null
   created_at: string
   updated_at: string
 }

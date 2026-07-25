@@ -83,14 +83,33 @@ export async function updateProfile(formData: FormData) {
 
   if (!user) return { error: "Not authenticated" }
 
-  const { error } = await supabase.from("profiles").upsert({
+  const { error: profileError } = await supabase.from("profiles").upsert({
     id: user.id,
     full_name: fullName,
     role,
     updated_at: new Date().toISOString(),
   })
 
-  if (error) return { error: error.message }
+  if (profileError) return { error: profileError.message }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("user_name")
+    .eq("id", user.id)
+    .single()
+
+  if (role === "creator") {
+    await supabase.from("creators").upsert({
+      id: user.id,
+      full_name: fullName,
+      user_name: profile?.user_name ?? null,
+    })
+  } else if (role === "brand") {
+    await supabase.from("brands").upsert({
+      id: user.id,
+      company_name: fullName,
+    })
+  }
 
   revalidatePath("/", "layout")
   redirect("/dashboard")
