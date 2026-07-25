@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 antialiased overflow-x-hidden">
@@ -49,8 +48,6 @@ const LandingPage = () => {
         }}
       />
 
-
-
       {/* Hero Section */}
       <section className="pt-30 pb-0 px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
@@ -70,7 +67,7 @@ const LandingPage = () => {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 max-w-lg leading-relaxed">
-              ElAura connects global brands with Africa's most authentic
+              ElAura connects global brands with Africa&apos;s most authentic
               creatives.
             </p>
             <div className="flex flex-row flex-wrap gap-3">
@@ -142,14 +139,14 @@ const LandingPage = () => {
             <div className="grid grid-cols-2 gap-2 overflow-hidden relative rounded-3xl border border-green-50 bg-green-50/20 p-1.5">
               <div className="space-y-2 animate-marquee-up flex flex-col">
                 {[
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1490.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1486.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1496.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1493.webp",
+                  "/images/landing/IMG_1490.webp",
+                  "/images/landing/IMG_1486.webp",
+                  "/images/landing/IMG_1496.webp",
+                  "/images/landing/IMG_1493.webp",
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-[500px]"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-h-125"
                   >
                     <Image
                       src={src}
@@ -164,14 +161,14 @@ const LandingPage = () => {
 
               <div className="space-y-2 animate-marquee-down flex flex-col">
                 {[
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1490.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1492.webp",
-                  "https://kywxrunpxavowwikbsmc.supabase.co/storage/v1/object/public/brand_assets/landing_page/IMG_1488.webp",
+                  "/images/landing/IMG_1490.webp",
+                  "/images/landing/IMG_1488.webp",
+                  "/images/landing/IMG_1492.webp",
+                  "/images/landing/IMG_1488.webp",
                 ].map((src, idx) => (
                   <div
                     key={idx}
-                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-[500px]"
+                    className="relative rounded-2xl overflow-hidden shadow-md border border-white bg-green-100/50 h-125]"
                   >
                     <Image
                       src={src}
@@ -367,7 +364,7 @@ const LandingPage = () => {
 
         <div className="max-w-4xl mx-auto relative z-10">
           <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
-            Ready to tap into Africa's creator economy?
+            Ready to tap into Africa&apos;s creator economy?
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
             Create a free brand account, filter our network, and secure your
@@ -378,7 +375,6 @@ const LandingPage = () => {
           </button>
         </div>
       </section>
-
     </div>
   );
 };
