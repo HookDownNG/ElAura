@@ -11,9 +11,18 @@ export default function CreatorLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isDashboard = pathname?.startsWith("/creator/dashboard");
 
-  if (isDashboard) {
+  // App / Studio pages for logged-in creators
+  const isAppPage =
+    pathname?.startsWith("/creator/dashboard") ||
+    pathname?.startsWith("/creator/packages") ||
+    pathname?.startsWith("/creator/storefront") ||
+    pathname?.startsWith("/creator/onboarding");
+
+  // Clean full-screen auth/join flow
+  const isJoinFlow = pathname === "/creator/join";
+
+  if (isAppPage) {
     return (
       <div className="min-h-screen flex flex-col bg-surface-50">
         <CreatorNavbar />
@@ -22,6 +31,15 @@ export default function CreatorLayout({
     );
   }
 
+  if (isJoinFlow) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <main className="flex-1">{children}</main>
+      </div>
+    );
+  }
+
+  // Public Creator Marketing Landing Page (/creator)
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <LandingNavbar />
