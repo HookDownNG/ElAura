@@ -16,7 +16,7 @@ import type { CreatorPackage, CreatorCategory } from "@/types";
 export const UGC_PACKAGE_TEMPLATES = [
   {
     type: "ugc_video",
-    label: "1x 30s Human UGC Video Ad",
+    label: "1x 30s On-Camera UGC Video Ad",
     category: "human",
   },
   {
@@ -106,7 +106,7 @@ export function UgcPackageModal({
         {/* Modal Header */}
         <div className="flex items-start sm:items-center justify-between border-b border-surface-100 pb-3 shrink-0 pt-1 sm:pt-0">
           <div className="flex items-start sm:items-center gap-2.5 min-w-0 pr-2">
-            <div className="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+            <div className="w-9 h-9 rounded-xl bg-surface-100 text-surface-800 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
               <Package className="h-5 w-5" />
             </div>
             <div className="min-w-0">
@@ -114,7 +114,7 @@ export function UgcPackageModal({
                 UGC Packages & Creator Type
               </h3>
               <p className="text-[11px] sm:text-xs text-surface-500 leading-normal">
-                Set your rates so brands can hire you for human or AI UGC
+                Set your rates so brands can hire you for On-Camera or AI UGC
               </p>
             </div>
           </div>
@@ -136,7 +136,7 @@ export function UgcPackageModal({
           )}
 
           {success && (
-            <div className="rounded-xl bg-emerald-50 p-3 text-xs text-emerald-700 font-medium border border-emerald-200 flex items-center gap-2">
+            <div className="rounded-xl bg-emerald-50 p-3 text-xs text-emerald-800 font-semibold border border-emerald-200 flex items-center gap-2">
               <Check className="h-4 w-4 text-emerald-600" />
               UGC Profile & Packages saved!
             </div>
@@ -158,7 +158,7 @@ export function UgcPackageModal({
                 }`}
               >
                 <User className="h-4 w-4 mb-1 text-emerald-600" />
-                <span className="text-[11px]">Human UGC</span>
+                <span className="text-[11px]">On-Camera UGC</span>
               </button>
 
               <button
@@ -201,7 +201,7 @@ export function UgcPackageModal({
                   type="button"
                   onClick={() => addPackageFromTemplate(t)}
                   disabled={packages.some((p) => p.type === t.type)}
-                  className="px-3.5 py-2 rounded-full text-xs font-semibold border border-surface-200 hover:border-brand-300 hover:bg-brand-50 text-surface-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 min-h-10"
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold border border-surface-200 hover:border-surface-400 bg-surface-50 text-surface-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 min-h-10"
                 >
                   + {t.label}
                 </button>
@@ -216,7 +216,7 @@ export function UgcPackageModal({
             </label>
             {packages.length === 0 ? (
               <div className="py-6 text-center border-2 border-dashed border-surface-200 rounded-xl">
-                <Package className="h-6 w-6 text-surface-300 mx-auto mb-1" />
+                <Package className="h-6 w-6 text-surface-400 mx-auto mb-1" />
                 <p className="text-xs font-semibold text-surface-600">
                   No packages added yet
                 </p>
@@ -241,7 +241,7 @@ export function UgcPackageModal({
                         updatePackage(i, "label", e.target.value)
                       }
                       placeholder="Package name (e.g., 1x 30s UGC Video)"
-                      className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-medium outline-none focus:border-brand-400 transition-colors min-h-11"
+                      className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-surface-400 transition-colors min-h-11"
                     />
                   </div>
                   <div className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export function UgcPackageModal({
                             );
                           }}
                           placeholder="0"
-                          className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-brand-400 transition-colors min-h-11"
+                          className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-surface-400 transition-colors min-h-11"
                         />
                       </div>
                     </div>
@@ -287,7 +287,7 @@ export function UgcPackageModal({
             <button
               type="button"
               onClick={addPackage}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 transition-colors pt-1 min-h-11"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-surface-900 hover:text-surface-700 transition-colors pt-1 min-h-11"
             >
               <Plus className="h-4 w-4" /> Add custom package
             </button>
