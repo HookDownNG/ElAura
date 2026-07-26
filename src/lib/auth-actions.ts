@@ -5,114 +5,11 @@ import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import type { AudienceSize } from "@/types"
 
-export async function signUpWithEmail(formData: FormData) {
-  const supabase = await createServerSupabaseClient()
-
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  return { success: true }
-}
-
-export async function signInWithEmail(formData: FormData) {
-  const supabase = await createServerSupabaseClient()
-
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  revalidatePath("/", "layout")
-  redirect("/dashboard")
-}
-
-export async function signInWithGoogle() {
-  const supabase = await createServerSupabaseClient()
-
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  if (data.url) {
-    redirect(data.url)
-  }
-}
-
 export async function signOut() {
   const supabase = await createServerSupabaseClient()
   await supabase.auth.signOut()
   revalidatePath("/", "layout")
   redirect("/")
-}
-
-export async function updateProfile(formData: FormData) {
-  const supabase = await createServerSupabaseClient()
-
-  const fullName = formData.get("full_name") as string
-  const role = formData.get("role") as string
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) return { error: "Not authenticated" }
-
-  const { error: profileError } = await supabase.from("profiles").upsert({
-    id: user.id,
-    full_name: fullName,
-    role,
-    updated_at: new Date().toISOString(),
-  })
-
-  if (profileError) return { error: profileError.message }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("user_name")
-    .eq("id", user.id)
-    .single()
-
-  if (role === "creator") {
-    await supabase.from("creators").upsert({
-      id: user.id,
-      full_name: fullName,
-      user_name: profile?.user_name ?? null,
-    })
-  } else if (role === "brand") {
-    await supabase.from("brands").upsert({
-      id: user.id,
-      company_name: fullName,
-    })
-  }
-
-  revalidatePath("/", "layout")
-  redirect("/dashboard")
 }
 
 export async function saveStorefront(formData: FormData) {
@@ -143,5 +40,5 @@ export async function saveStorefront(formData: FormData) {
   if (error) return { error: error.message }
 
   revalidatePath("/", "layout")
-  redirect("/dashboard")
+  redirect("/creator/dashboard")
 }
