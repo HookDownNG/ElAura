@@ -17,17 +17,14 @@ export async function saveCreatorOnboarding(formData: FormData) {
     .single()
 
   const platformsRaw = formData.get("social_platforms") as string
-  const locationsRaw = formData.get("audience_locations") as string
   const packagesRaw = formData.get("packages") as string
   const portfolioRaw = formData.get("portfolio_urls") as string
 
   let socialPlatforms = []
-  let audienceLocations = []
   let packages = []
   let portfolioUrls = []
 
   try { socialPlatforms = JSON.parse(platformsRaw) } catch {}
-  try { audienceLocations = JSON.parse(locationsRaw) } catch {}
   try { packages = JSON.parse(packagesRaw) } catch {}
   try { portfolioUrls = JSON.parse(portfolioRaw) } catch {}
 
@@ -39,18 +36,11 @@ export async function saveCreatorOnboarding(formData: FormData) {
     id: user.id,
     user_name: profile?.user_name ?? null,
     niches,
-    audience_tier: formData.get("audience_tier") as string || null,
+    audience_size: formData.get("audience_size") as string || null,
     bio: formData.get("bio") as string || null,
     social_platforms: socialPlatforms,
-    audience_locations: audienceLocations,
-    content_language: formData.get("content_language") as string || null,
-    audience_demographic: formData.get("audience_demographic") as string || null,
     packages,
-    turnaround_days: formData.get("turnaround_days") ? Number(formData.get("turnaround_days")) : null,
-    usage_rights: formData.get("usage_rights") as string || null,
     portfolio_urls: portfolioUrls,
-    payout_method: formData.get("payout_method") as string || null,
-    payout_currency: formData.get("payout_currency") as string || "NGN",
   })
 
   if (error) return { error: error.message }

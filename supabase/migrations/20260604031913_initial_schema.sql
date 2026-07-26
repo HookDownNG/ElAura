@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS public.creators (
   bank_code TEXT,
   phone TEXT,
   niches TEXT[] DEFAULT '{}',
-  audience_tier TEXT CHECK (audience_tier IN ('nano', 'micro', 'macro', 'mega')),
+  audience_size TEXT CHECK (audience_size IN ('nano', 'micro', 'macro', 'mega')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

@@ -27,7 +27,7 @@ function StorefrontContent() {
   const [step, setStep] = useState<"auth" | "storefront">("auth")
   const [userName, setUserName] = useState("")
   const [selectedNiches, setSelectedNiches] = useState<string[]>([])
-  const [audienceTier, setAudienceTier] = useState<string | null>(null)
+  const [audienceSize, setAudienceSize] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -59,7 +59,7 @@ function StorefrontContent() {
     e.preventDefault()
     setError(null)
 
-    if (!userName.trim() || selectedNiches.length === 0 || !audienceTier) {
+    if (!userName.trim() || selectedNiches.length === 0 || !audienceSize) {
       setError("Please fill in all fields")
       return
     }
@@ -68,7 +68,7 @@ function StorefrontContent() {
     const formData = new FormData()
     formData.set("user_name", userName.trim())
     formData.set("niches", JSON.stringify(selectedNiches))
-    formData.set("audience_tier", audienceTier)
+    formData.set("audience_size", audienceSize)
 
     const result = await saveStorefront(formData)
     if (result?.error) {
@@ -153,14 +153,14 @@ function StorefrontContent() {
                 <button
                   key={tier.value}
                   type="button"
-                  onClick={() => setAudienceTier(tier.value)}
+                  onClick={() => setAudienceSize(tier.value)}
                   className={`text-left rounded-xl border p-4 transition-all ${
-                    audienceTier === tier.value
+                    audienceSize === tier.value
                       ? "bg-brand-50 border-brand-400 ring-2 ring-brand-200"
                       : "bg-white border-surface-200 hover:border-brand-200"
                   }`}
                 >
-                  <p className={`text-sm font-bold ${audienceTier === tier.value ? "text-brand-700" : "text-surface-900"}`}>
+                  <p className={`text-sm font-bold ${audienceSize === tier.value ? "text-brand-700" : "text-surface-900"}`}>
                     {tier.label}
                   </p>
                   <p className="text-xs text-surface-400 mt-0.5">{tier.desc}</p>

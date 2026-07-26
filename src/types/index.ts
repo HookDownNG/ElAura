@@ -16,7 +16,7 @@ export interface Profile {
   created_at: string
 }
 
-export type AudienceTier = "nano" | "micro" | "macro" | "mega"
+export type AudienceSize = "nano" | "micro" | "macro" | "mega"
 
 export interface SocialPlatform {
   platform: "tiktok" | "instagram" | "youtube" | "x"
@@ -38,23 +38,23 @@ export interface Creator {
   id: string
   full_name: string | null
   user_name: string | null
-  bank_account_number: string | null
-  bank_name: string | null
-  bank_code: string | null
-  phone: string | null
+  bank_account_number?: string | null
+  bank_name?: string | null
+  bank_code?: string | null
+  phone?: string | null
   niches: string[] | null
-  audience_tier: AudienceTier | null
+  audience_size: AudienceSize | null
   bio: string | null
   social_platforms: SocialPlatform[] | null
-  audience_locations: AudienceLocation[] | null
-  content_language: string | null
-  audience_demographic: string | null
+  audience_locations?: AudienceLocation[] | null
+  content_language?: string | null
+  audience_demographic?: string | null
   packages: CreatorPackage[] | null
-  turnaround_days: number | null
-  usage_rights: string | null
+  turnaround_days?: number | null
+  usage_rights?: string | null
   portfolio_urls: string[] | null
-  payout_method: string | null
-  payout_currency: string | null
+  payout_method?: string | null
+  payout_currency?: string | null
   created_at: string
   updated_at: string
 }
