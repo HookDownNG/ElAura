@@ -3,6 +3,8 @@
 import { useEffect, useState, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase"
+import { GlobalLoader } from "@/components/ui/global-loader"
+import { ArrowLeft, Lock, Sparkles } from "lucide-react"
 
 function JoinContent() {
   const router = useRouter()
@@ -51,10 +53,21 @@ function JoinContent() {
   async function handleGoogleSignIn() {
     setLoading(true)
     setError(null)
+    const cleanName = userName.trim().toLowerCase()
+    
+    // Store in cookie so Server Action / Route Handler can read it post-OAuth
+    if (typeof document !== "undefined") {
+      document.cookie = `pending_user_name=${encodeURIComponent(cleanName)}; path=/; max-age=600; SameSite=Lax`
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          user_name: cleanName,
+          role: "creator",
+        },
       },
     })
     if (error) {
@@ -64,58 +77,85 @@ function JoinContent() {
   }
 
   if (!checkedSession) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-      </div>
-    )
+    return <GlobalLoader message="Securing your username..." />
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md text-center">
-        <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50">
-          <svg className="h-8 w-8 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-          </svg>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-surface-50/70 px-4 py-8 sm:py-12 overflow-y-auto select-none">
+      <div className="w-full max-w-md my-auto space-y-4">
+        {/* Back / Change Username Button */}
+        <div className="flex items-center justify-start">
+          <button
+            type="button"
+            onClick={() => router.push("/creator")}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-surface-600 hover:text-surface-900 transition-colors py-2 px-3.5 rounded-full bg-white hover:bg-surface-100 border border-surface-200 shadow-2xs min-h-10"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 text-surface-500" />
+            <span>Change Username</span>
+          </button>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight mb-2 text-surface-900">
-          Locking in your username
-        </h1>
-        <p className="text-lg text-brand-600 font-semibold mb-8">
-          @{userName}
-        </p>
+        {/* Premium Form Card */}
+        <div className="rounded-3xl border border-surface-200 bg-white p-6 sm:p-8 shadow-xl shadow-surface-200/40 text-center space-y-6 relative overflow-hidden">
+          {/* Subtle Ambient Background Halo */}
+          <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-brand-100/50 blur-2xl pointer-events-none" />
 
-        <p className="text-sm text-surface-500 mb-8 max-w-xs mx-auto leading-relaxed">
-          This username is available. One click and it&apos;s yours forever.
-        </p>
+          {/* Icon Badge */}
+          <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 border border-brand-100 shadow-2xs">
+            <Lock className="h-6 w-6" />
+          </div>
 
-        <button
-          onClick={handleGoogleSignIn}
-          disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-surface-950 hover:bg-surface-800 text-white rounded-full px-6 py-3.5 text-sm font-semibold transition-all disabled:opacity-60 shadow-lg"
-        >
-          {loading ? (
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-          ) : (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-            </svg>
+          {/* Headline & Username Pill */}
+          <div className="space-y-3">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-surface-900 leading-tight">
+              Locking In Your Profile
+            </h1>
+
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-4 py-1.5 text-sm font-black text-brand-700 border border-brand-200/80">
+              <Sparkles className="h-4 w-4 text-brand-600" />
+              <span>@{userName}</span>
+            </div>
+          </div>
+
+          <p className="text-xs sm:text-sm text-surface-500 max-w-xs mx-auto leading-relaxed">
+            This username is available. Continue with Google to create your creator profile and start accepting brand deals.
+          </p>
+
+          {/* Styled Google Auth Button */}
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-3 bg-surface-950 hover:bg-black active:scale-[0.98] text-white rounded-full px-6 py-3.5 text-sm font-bold transition-all disabled:opacity-60 shadow-lg shadow-surface-950/20 min-h-12 border border-surface-800"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Connecting...
+              </span>
+            ) : (
+              <>
+                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                <span>Continue with Google</span>
+              </>
+            )}
+          </button>
+
+          {error && (
+            <p className="mt-4 text-xs font-medium text-red-500 bg-red-50 p-3 rounded-xl border border-red-200">
+              {error}
+            </p>
           )}
-          Continue with Google
-        </button>
 
-        {error && (
-          <p className="mt-4 text-sm text-red-500">{error}</p>
-        )}
-
-        <p className="mt-6 text-xs text-surface-400">
-          No password needed. Secure, fast, and modern.
-        </p>
+          <p className="text-[11px] font-medium text-surface-400">
+            🔒 Fast & passwordless authentication
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -123,11 +163,7 @@ function JoinContent() {
 
 export default function CreatorJoinPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-      </div>
-    }>
+    <Suspense fallback={<GlobalLoader message="Loading ElAura..." />}>
       <JoinContent />
     </Suspense>
   )

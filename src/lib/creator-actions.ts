@@ -34,12 +34,13 @@ export async function saveCreatorOnboarding(formData: FormData) {
 
   const fallbackUserName = (formData.get("user_name") as string || "").trim()
   const userName = profile?.user_name || (fallbackUserName ? fallbackUserName.toLowerCase() : null)
+  const creatorCategory = (formData.get("creator_category") as string) || "human_ugc"
 
   const { error } = await supabase.from("creators").upsert({
     id: user.id,
     user_name: userName,
+    creator_category: creatorCategory,
     niches,
-    audience_size: formData.get("audience_size") as string || null,
     bio: formData.get("bio") as string || null,
     social_platforms: socialPlatforms,
     packages,

@@ -13,17 +13,18 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Creator-specific information
+-- Creator-specific information (Human & AI UGC Content Creators)
 CREATE TABLE IF NOT EXISTS public.creators (
   id UUID PRIMARY KEY REFERENCES public.profiles(id) ON DELETE CASCADE,
   full_name TEXT,
   user_name TEXT,
+  creator_category TEXT CHECK (creator_category IN ('human_ugc', 'ai_ugc', 'hybrid')),
   bank_account_number TEXT,
   bank_name TEXT,
   bank_code TEXT,
   phone TEXT,
+  shipping_address TEXT,
   niches TEXT[] DEFAULT '{}',
-  audience_size TEXT CHECK (audience_size IN ('nano', 'micro', 'macro', 'mega')),
   bio TEXT,
   social_platforms JSONB DEFAULT '[]',
   packages JSONB DEFAULT '[]',

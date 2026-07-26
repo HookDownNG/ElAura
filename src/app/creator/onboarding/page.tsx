@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { saveCreatorOnboarding } from "@/lib/creator-actions";
+import { GlobalLoader } from "@/components/ui/global-loader";
 import {
   Check,
   ChevronLeft,
@@ -225,11 +226,7 @@ function OnboardingContent() {
   }
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-      </div>
-    );
+    return <GlobalLoader message="Loading onboarding..." />;
   }
 
   return (
@@ -638,13 +635,7 @@ function OnboardingContent() {
 
 export default function CreatorOnboardingPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center bg-gray-50">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-        </div>
-      }
-    >
+    <Suspense fallback={<GlobalLoader message="Loading ElAura..." />}>
       <OnboardingContent />
     </Suspense>
   );

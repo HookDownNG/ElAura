@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
-import type { AudienceSize } from "@/types"
+import type { CreatorCategory } from "@/types"
 
 export async function signOut() {
   const supabase = await createServerSupabaseClient()
@@ -20,7 +20,7 @@ export async function saveStorefront(formData: FormData) {
 
   const userName = formData.get("user_name") as string
   const nichesRaw = formData.get("niches") as string
-  const audienceSize = formData.get("audience_size") as AudienceSize
+  const creatorCategory = (formData.get("creator_category") as CreatorCategory) || "human_ugc"
 
   let niches: string[] = []
   try {
@@ -33,8 +33,8 @@ export async function saveStorefront(formData: FormData) {
     id: user.id,
     full_name: user.user_metadata?.full_name ?? null,
     user_name: userName,
+    creator_category: creatorCategory,
     niches,
-    audience_size: audienceSize,
   })
 
   if (error) return { error: error.message }
