@@ -40,7 +40,7 @@ function JoinContent() {
           localStorage.removeItem("pending_user_name")
         } catch {}
 
-        router.push("/creator/onboarding")
+        router.push("/creator/dashboard")
         return
       }
       setCheckedSession(true)

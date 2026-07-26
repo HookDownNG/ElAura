@@ -208,31 +208,50 @@ export default function CreatorPage() {
   }
 
   async function handleClaim() {
-    if (!username.trim()) return;
+    const normalizedUsername = username.trim().toLowerCase();
+    if (!normalizedUsername) return;
+
     setClaimLoading(true);
     setClaimError(null);
 
     try {
       const supabase = createClient();
-      const { data } = await supabase
-        .from("creators")
-        .select("user_name")
-        .eq("user_name", username)
-        .maybeSingle();
+      const [
+        { data: profileData, error: profileError },
+        { data: creatorData, error: creatorError },
+      ] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("user_name")
+          .ilike("user_name", normalizedUsername)
+          .maybeSingle(),
+        supabase
+          .from("creators")
+          .select("user_name")
+          .ilike("user_name", normalizedUsername)
+          .maybeSingle(),
+      ]);
 
-      if (data) {
+      if (profileError || creatorError) {
+        console.error("Username lookup failed", { profileError, creatorError });
+        setClaimError("Something went wrong. Please try again.");
+        return;
+      }
+
+      if (profileData || creatorData) {
         setClaimError("This username is already taken.");
-        setClaimLoading(false);
         return;
       }
 
       try {
-        localStorage.setItem("pending_user_name", username);
+        localStorage.setItem("pending_user_name", normalizedUsername);
       } catch {}
 
       router.push("/creator/join");
-    } catch {
+    } catch (error) {
+      console.error("Username claim failed", error);
       setClaimError("Something went wrong. Please try again.");
+    } finally {
       setClaimLoading(false);
     }
   }
@@ -568,7 +587,6 @@ export default function CreatorPage() {
           </button>
         </section>
       </FadeInSection>
-
     </div>
   );
 }

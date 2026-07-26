@@ -133,9 +133,9 @@ CREATE POLICY "Users can update their own profile" ON public.profiles
 CREATE POLICY "Users can insert their own profile" ON public.profiles
   FOR INSERT WITH CHECK (auth.uid() = id);
 
--- Creators: only the creator can view/update their own
-CREATE POLICY "Creators viewable by owner" ON public.creators
-  FOR SELECT USING (auth.uid() = id);
+-- Creators: usernames are publicly readable for availability checks; owners can still update their own row
+CREATE POLICY "Creators viewable by everyone" ON public.creators
+  FOR SELECT USING (true);
 
 CREATE POLICY "Creators updatable by owner" ON public.creators
   FOR UPDATE USING (auth.uid() = id);

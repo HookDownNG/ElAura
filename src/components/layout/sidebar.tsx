@@ -9,7 +9,6 @@ import {
   FileText,
   Bell,
   Settings,
-  Users,
   Shield,
   LogOut,
   type LucideIcon,
@@ -17,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth-actions";
+import { createClient } from "@/lib/supabase";
 
 interface SidebarLink {
   href: string;
@@ -53,11 +53,21 @@ interface SidebarProps {
 
 export function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
+  const supabase = createClient();
 
   let links: SidebarLink[];
   if (role === "admin") links = adminLinks;
   else if (role === "brand") links = brandLinks;
   else links = creatorLinks;
+
+  async function handleSignOut() {
+    try {
+      await supabase.auth.signOut();
+      await signOut();
+    } catch {
+      window.location.href = "/";
+    }
+  }
 
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card">
@@ -90,16 +100,16 @@ export function Sidebar({ role }: SidebarProps) {
         </nav>
 
         <div className="border-t border-border p-4">
-          <form action={signOut}>
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 text-muted-foreground"
-              size="sm"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </Button>
-          </form>
+          <Button
+            type="button"
+            onClick={handleSignOut}
+            variant="ghost"
+            className="w-full justify-start gap-3 text-muted-foreground"
+            size="sm"
+          >
+            <LogOut className="h-4 w-4" />
+            Sign Out
+          </Button>
         </div>
       </div>
     </aside>

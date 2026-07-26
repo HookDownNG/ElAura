@@ -91,9 +91,7 @@ function OnboardingContent() {
         router.push("/creator");
         return;
       }
-      if (isMounted) {
-        setLoading(false);
-      }
+      router.push("/creator/dashboard");
     }
     checkSession();
     return () => {
