@@ -35,6 +35,7 @@ export interface CreatorPackage {
   type: PackageType
   label: string
   price: number
+  sample_video_url?: string | null
 }
 
 export interface Creator {

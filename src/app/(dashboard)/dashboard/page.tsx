@@ -71,20 +71,16 @@ export default function DashboardPage() {
           .select("*")
           .eq("brand_id", user.id)
           .order("created_at", { ascending: false });
+
         setCampaigns(camps ?? []);
-
         const campaignIds = camps?.map((c) => c.id) ?? [];
-        if (campaignIds.length > 0) {
-          const { data: ms } = await supabase
-            .from("milestones")
-            .select("*")
-            .in("campaign_id", campaignIds);
-          setMilestones(ms ?? []);
 
-          const { data: apps } = await supabase
-            .from("applications")
-            .select("*, creator:creator_id(*)")
-            .in("campaign_id", campaignIds);
+        if (campaignIds.length > 0) {
+          const [{ data: ms }, { data: apps }] = await Promise.all([
+            supabase.from("milestones").select("*").in("campaign_id", campaignIds),
+            supabase.from("applications").select("*, creator:creator_id(*)").in("campaign_id", campaignIds),
+          ]);
+          setMilestones(ms ?? []);
           setApplications(apps ?? []);
         }
       } else {
@@ -131,13 +127,13 @@ export default function DashboardPage() {
             </Link>
           ) : profile?.user_name ? (
             <a
-              href={`https://elaura.com/${profile.user_name}`}
+              href={`/creator/${profile.user_name}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors"
             >
               <ExternalLink className="h-4 w-4" />
-              elaura.com/{profile.user_name}
+              elaura.com/creator/{profile.user_name}
             </a>
           ) : null}
 

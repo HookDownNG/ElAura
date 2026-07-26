@@ -111,7 +111,7 @@ function StorefrontContent() {
               className="w-full rounded-xl border border-surface-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand-400 transition-colors placeholder:text-surface-300"
             />
             <p className="text-xs text-surface-400">
-              This will be your public profile URL: elaura.com/{userName || "yourname"}
+              This will be your public profile URL: elaura.com/creator/{userName || "yourname"}
             </p>
           </div>
 
