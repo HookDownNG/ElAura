@@ -4,18 +4,19 @@ import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase"
 import { saveStorefront } from "@/lib/auth-actions"
+import { GlobalLoader } from "@/components/ui/global-loader"
+import { Bot, User, Sparkles } from "lucide-react"
 
 const NICHE_OPTIONS = [
-  "UGC", "Fashion", "Tech", "Lifestyle", "Beauty",
-  "Fitness", "Food", "Gaming", "Music", "Comedy",
-  "Education", "Travel", "Sports", "Business",
+  "UGC Video Ads", "E-commerce Unboxing", "Fashion & Beauty", "Tech & Software", "Lifestyle",
+  "Fitness & Health", "Food & Cooking", "Gaming", "Music", "Comedy",
+  "Education", "Travel", "Sports", "Business & Finance",
 ]
 
-const TIER_OPTIONS = [
-  { value: "nano", label: "Nano Creator", desc: "Under 5k followers" },
-  { value: "micro", label: "Micro Creator", desc: "5k – 50k followers" },
-  { value: "macro", label: "Macro Creator", desc: "50k – 500k followers" },
-  { value: "mega", label: "Mega Creator", desc: "500k+ followers" },
+const CATEGORY_OPTIONS = [
+  { value: "human_ugc", label: "Human UGC Creator", desc: "On-camera filming, unboxing, real presenter", icon: User },
+  { value: "ai_ugc", label: "AI UGC Creator", desc: "AI Avatars, AI Voiceovers, AI Video Generation", icon: Bot },
+  { value: "hybrid", label: "Hybrid UGC Creator", desc: "Mix of real human filming and AI tools", icon: Sparkles },
 ] as const
 
 function StorefrontContent() {
@@ -27,7 +28,7 @@ function StorefrontContent() {
   const [step, setStep] = useState<"auth" | "storefront">("auth")
   const [userName, setUserName] = useState("")
   const [selectedNiches, setSelectedNiches] = useState<string[]>([])
-  const [audienceSize, setAudienceSize] = useState<string | null>(null)
+  const [creatorCategory, setCreatorCategory] = useState<string>("human_ugc")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -59,7 +60,7 @@ function StorefrontContent() {
     e.preventDefault()
     setError(null)
 
-    if (!userName.trim() || selectedNiches.length === 0 || !audienceSize) {
+    if (!userName.trim() || selectedNiches.length === 0) {
       setError("Please fill in all fields")
       return
     }
@@ -68,7 +69,7 @@ function StorefrontContent() {
     const formData = new FormData()
     formData.set("user_name", userName.trim())
     formData.set("niches", JSON.stringify(selectedNiches))
-    formData.set("audience_size", audienceSize)
+    formData.set("creator_category", creatorCategory)
 
     const result = await saveStorefront(formData)
     if (result?.error) {
@@ -78,11 +79,7 @@ function StorefrontContent() {
   }
 
   if (step === "auth") {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-      </div>
-    )
+    return <GlobalLoader message="Loading storefront setup..." />
   }
 
   return (
@@ -90,12 +87,10 @@ function StorefrontContent() {
       <div className="w-full max-w-xl">
         <div className="text-center mb-10">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50">
-            <svg className="h-7 w-7 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
-            </svg>
+            <Sparkles className="h-7 w-7 text-brand-600" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-surface-900">
-            Set Up Your Creator Storefront
+            Set Up Your UGC Creator Profile
           </h1>
           <p className="text-surface-500 text-sm mt-2">
             Locking in @{user_name} — just a few more details
@@ -120,10 +115,40 @@ function StorefrontContent() {
             </p>
           </div>
 
+          {/* Creator Category */}
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-surface-900">
+              Creator Type
+            </label>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {CATEGORY_OPTIONS.map((cat) => {
+                const Icon = cat.icon
+                return (
+                  <button
+                    key={cat.value}
+                    type="button"
+                    onClick={() => setCreatorCategory(cat.value)}
+                    className={`text-left rounded-xl border p-4 transition-all ${
+                      creatorCategory === cat.value
+                        ? "bg-brand-50 border-brand-400 ring-2 ring-brand-200"
+                        : "bg-white border-surface-200 hover:border-brand-200"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5 mb-1.5 text-brand-600" />
+                    <p className={`text-xs font-bold ${creatorCategory === cat.value ? "text-brand-700" : "text-surface-900"}`}>
+                      {cat.label}
+                    </p>
+                    <p className="text-[11px] text-surface-400 mt-1 leading-tight">{cat.desc}</p>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
           {/* Niche Selection */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-surface-900">
-              What do you create?
+              Content Specialties
             </label>
             <div className="flex flex-wrap gap-2">
               {NICHE_OPTIONS.map((niche) => (
@@ -131,39 +156,13 @@ function StorefrontContent() {
                   key={niche}
                   type="button"
                   onClick={() => toggleNiche(niche)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+                  className={`px-4 py-2 rounded-full text-xs font-medium border transition-all ${
                     selectedNiches.includes(niche)
                       ? "bg-brand-600 text-white border-brand-600"
                       : "bg-white text-surface-600 border-surface-200 hover:border-brand-200"
                   }`}
                 >
                   {niche}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Audience Tier */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-surface-900">
-              Audience Size
-            </label>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {TIER_OPTIONS.map((tier) => (
-                <button
-                  key={tier.value}
-                  type="button"
-                  onClick={() => setAudienceSize(tier.value)}
-                  className={`text-left rounded-xl border p-4 transition-all ${
-                    audienceSize === tier.value
-                      ? "bg-brand-50 border-brand-400 ring-2 ring-brand-200"
-                      : "bg-white border-surface-200 hover:border-brand-200"
-                  }`}
-                >
-                  <p className={`text-sm font-bold ${audienceSize === tier.value ? "text-brand-700" : "text-surface-900"}`}>
-                    {tier.label}
-                  </p>
-                  <p className="text-xs text-surface-400 mt-0.5">{tier.desc}</p>
                 </button>
               ))}
             </div>
@@ -184,7 +183,7 @@ function StorefrontContent() {
                 Setting up...
               </span>
             ) : (
-              "Start Your Journey"
+              "Complete Profile"
             )}
           </button>
         </form>
@@ -195,11 +194,7 @@ function StorefrontContent() {
 
 export default function StorefrontPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-      </div>
-    }>
+    <Suspense fallback={<GlobalLoader message="Loading ElAura..." />}>
       <StorefrontContent />
     </Suspense>
   )

@@ -143,6 +143,16 @@
   animation: zoom-out 0.2s ease-in;
 }
 
+@keyframes loader-bar {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+@utility animate-loader-bar {
+  animation: loader-bar 1.5s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border;

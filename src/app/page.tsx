@@ -1,11 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { LandingNavbar } from "@/components/layout/landing-navbar";
 import { LandingFooter } from "@/components/layout/landing-footer";
 
 const LandingPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.search.includes("code=")) {
+      router.replace(`/auth/callback${window.location.search}`);
+    }
+  }, [router]);
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 antialiased overflow-x-hidden">
       <LandingNavbar />

@@ -208,31 +208,50 @@ export default function CreatorPage() {
   }
 
   async function handleClaim() {
-    if (!username.trim()) return;
+    const normalizedUsername = username.trim().toLowerCase();
+    if (!normalizedUsername) return;
+
     setClaimLoading(true);
     setClaimError(null);
 
     try {
       const supabase = createClient();
-      const { data } = await supabase
-        .from("creators")
-        .select("user_name")
-        .eq("user_name", username)
-        .maybeSingle();
+      const [
+        { data: profileData, error: profileError },
+        { data: creatorData, error: creatorError },
+      ] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("user_name")
+          .ilike("user_name", normalizedUsername)
+          .maybeSingle(),
+        supabase
+          .from("creators")
+          .select("user_name")
+          .ilike("user_name", normalizedUsername)
+          .maybeSingle(),
+      ]);
 
-      if (data) {
+      if (profileError || creatorError) {
+        console.error("Username lookup failed", { profileError, creatorError });
+        setClaimError("Something went wrong. Please try again.");
+        return;
+      }
+
+      if (profileData || creatorData) {
         setClaimError("This username is already taken.");
-        setClaimLoading(false);
         return;
       }
 
       try {
-        localStorage.setItem("pending_user_name", username);
+        localStorage.setItem("pending_user_name", normalizedUsername);
       } catch {}
 
       router.push("/creator/join");
-    } catch {
+    } catch (error) {
+      console.error("Username claim failed", error);
       setClaimError("Something went wrong. Please try again.");
+    } finally {
       setClaimLoading(false);
     }
   }
@@ -260,11 +279,10 @@ export default function CreatorPage() {
         <section className="pt-36 pb-16 px-6 text-center max-w-4xl mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6">
             <span className="text-brand-600 font-display-italic">Get Paid</span>{" "}
-            to Work With Brands You Love
+            to Create Human & AI UGC Ads
           </h1>
           <p className="text-lg sm:text-xl text-surface-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            The simple way to get paid for your Instagram, TikTok, YouTube, and
-            UGC brand deals.
+            The premier marketplace for African Human & AI UGC Creators. Get hired for video ads, product unboxings, AI avatar videos, and voiceovers.
           </p>
 
           <div className="max-w-lg mx-auto">
@@ -279,6 +297,9 @@ export default function CreatorPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleClaim()}
                 placeholder="yourname"
                 className="flex-1 py-3.5 pr-2 text-sm outline-none text-surface-900 placeholder:text-surface-300 min-w-0 bg-transparent"
+                suppressHydrationWarning
+                autoComplete="off"
+                data-gramm="false"
               />
               <button
                 onClick={handleClaim}
@@ -568,7 +589,6 @@ export default function CreatorPage() {
           </button>
         </section>
       </FadeInSection>
-
     </div>
   );
 }

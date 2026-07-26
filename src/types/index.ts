@@ -16,20 +16,23 @@ export interface Profile {
   created_at: string
 }
 
-export type AudienceSize = "nano" | "micro" | "macro" | "mega"
-
 export interface SocialPlatform {
   platform: "tiktok" | "instagram" | "youtube" | "x"
   handle: string
 }
 
-export interface AudienceLocation {
-  country: string
-  city: string
-}
+export type CreatorCategory = "human_ugc" | "ai_ugc" | "hybrid"
+
+export type PackageType =
+  | "ugc_video"
+  | "ai_ugc_avatar"
+  | "ugc_hooks_bundle"
+  | "ai_voiceover_script"
+  | "unboxing_review"
+  | "custom"
 
 export interface CreatorPackage {
-  type: "tiktok_reel" | "instagram_carousel" | "youtube_video" | "custom"
+  type: PackageType
   label: string
   price: number
 }
@@ -38,17 +41,16 @@ export interface Creator {
   id: string
   full_name: string | null
   user_name: string | null
+  creator_category?: CreatorCategory | null
   bank_account_number?: string | null
   bank_name?: string | null
   bank_code?: string | null
   phone?: string | null
+  shipping_address?: string | null
   niches: string[] | null
-  audience_size: AudienceSize | null
   bio: string | null
-  social_platforms: SocialPlatform[] | null
-  audience_locations?: AudienceLocation[] | null
+  social_platforms?: SocialPlatform[] | null
   content_language?: string | null
-  audience_demographic?: string | null
   packages: CreatorPackage[] | null
   turnaround_days?: number | null
   usage_rights?: string | null

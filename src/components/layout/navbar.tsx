@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/lib/auth-actions";
+import { createClient } from "@/lib/supabase";
 import type { Profile } from "@/types";
 
 interface NavbarProps {
@@ -21,6 +22,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ profile }: NavbarProps) {
+  const supabase = createClient();
   const initials = profile?.full_name
     ? profile.full_name
         .split(" ")
@@ -28,6 +30,15 @@ export function Navbar({ profile }: NavbarProps) {
         .join("")
         .toUpperCase()
     : "U";
+
+  async function handleSignOut() {
+    try {
+      await supabase.auth.signOut();
+      await signOut();
+    } catch {
+      window.location.href = "/";
+    }
+  }
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
@@ -72,13 +83,9 @@ export function Navbar({ profile }: NavbarProps) {
             <Link href="/settings">Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <form action={signOut}>
-            <DropdownMenuItem asChild>
-              <button type="submit" className="w-full cursor-pointer">
-                Sign Out
-              </button>
-            </DropdownMenuItem>
-          </form>
+          <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-600">
+            Sign Out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
