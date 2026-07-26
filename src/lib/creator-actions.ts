@@ -32,9 +32,12 @@ export async function saveCreatorOnboarding(formData: FormData) {
   let niches: string[] = []
   try { niches = JSON.parse(nichesRaw) } catch {}
 
+  const fallbackUserName = (formData.get("user_name") as string || "").trim()
+  const userName = profile?.user_name || (fallbackUserName ? fallbackUserName.toLowerCase() : null)
+
   const { error } = await supabase.from("creators").upsert({
     id: user.id,
-    user_name: profile?.user_name ?? null,
+    user_name: userName,
     niches,
     audience_size: formData.get("audience_size") as string || null,
     bio: formData.get("bio") as string || null,
@@ -47,10 +50,10 @@ export async function saveCreatorOnboarding(formData: FormData) {
 
   const { error: profileError } = await supabase
     .from("profiles")
-    .upsert({ id: user.id, role: "creator" })
+    .upsert({ id: user.id, role: "creator", ...(userName ? { user_name: userName } : {}) })
 
   if (profileError) return { error: profileError.message }
 
   revalidatePath("/", "layout")
-  redirect("/dashboard")
+  redirect("/creator/dashboard")
 }

@@ -191,6 +191,11 @@ function OnboardingContent() {
     setSubmitting(true);
     setError(null);
 
+    let pendingUserName = "";
+    try {
+      pendingUserName = localStorage.getItem("pending_user_name") || "";
+    } catch {}
+
     const formData = new FormData();
     const socialPlatforms: SocialPlatform[] = selectedPlatforms.map((p) => ({
       platform: p,
@@ -199,6 +204,7 @@ function OnboardingContent() {
     formData.set("social_platforms", JSON.stringify(socialPlatforms));
     formData.set("niches", JSON.stringify(selectedNiches));
     formData.set("audience_size", audienceSize || "");
+    formData.set("user_name", pendingUserName);
     formData.set(
       "packages",
       JSON.stringify(packages.filter((p) => p.price > 0)),
@@ -213,6 +219,10 @@ function OnboardingContent() {
     if (result?.error) {
       setError(result.error);
       setSubmitting(false);
+    } else {
+      try {
+        localStorage.removeItem("pending_user_name");
+      } catch {}
     }
   }
 

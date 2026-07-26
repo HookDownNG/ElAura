@@ -39,7 +39,7 @@ function StorefrontContent() {
     async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        router.push(`/join?user_name=${encodeURIComponent(user_name)}`)
+        router.push(`/creator/join?user_name=${encodeURIComponent(user_name)}`)
         return
       }
       setStep("storefront")

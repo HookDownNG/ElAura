@@ -226,7 +226,11 @@ export default function CreatorPage() {
         return;
       }
 
-      router.push(`/join?user_name=${encodeURIComponent(username)}&role=${encodeURIComponent(role)}`);
+      try {
+        localStorage.setItem("pending_user_name", username);
+      } catch {}
+
+      router.push("/creator/join");
     } catch {
       setClaimError("Something went wrong. Please try again.");
       setClaimLoading(false);
@@ -250,8 +254,6 @@ export default function CreatorPage() {
       `,
         }}
       />
-
-
 
       {/* Hero */}
       <FadeInSection>

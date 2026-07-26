@@ -1,44 +1,52 @@
 "use client"
 
 import { useEffect, useState, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase"
 
 function JoinContent() {
-  const searchParams = useSearchParams()
-  const user_name = searchParams.get("user_name") || ""
-  const role = searchParams.get("role") || "creator"
   const router = useRouter()
   const supabase = createClient()
+  const [userName, setUserName] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [checkedSession, setCheckedSession] = useState(false)
 
   useEffect(() => {
-    if (!user_name) {
+    const pendingName = typeof window !== "undefined" ? localStorage.getItem("pending_user_name") || "" : ""
+    setUserName(pendingName)
+
+    if (!pendingName) {
       router.push("/creator")
       return
     }
+
     async function checkSession() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("user_name, role")
-          .eq("id", user.id)
-          .single()
+        const cleanName = pendingName.toLowerCase()
+        await supabase.from("profiles").upsert({
+          id: user.id,
+          user_name: cleanName,
+          role: "creator",
+          updated_at: new Date().toISOString(),
+        })
+        await supabase.from("creators").upsert({
+          id: user.id,
+          user_name: cleanName,
+          full_name: user.user_metadata?.full_name ?? null,
+        })
+        try {
+          localStorage.removeItem("pending_user_name")
+        } catch {}
 
-        if (profile?.role) {
-          router.push("/dashboard")
-          return
-        }
-        router.push("/onboarding")
+        router.push("/creator/onboarding")
         return
       }
       setCheckedSession(true)
     }
     checkSession()
-  }, [user_name, router, supabase])
+  }, [router, supabase])
 
   async function handleGoogleSignIn() {
     setLoading(true)
@@ -46,9 +54,8 @@ function JoinContent() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?role=${encodeURIComponent(role)}`,
-        state: `${role}:${user_name}`,
-      } as never,
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
     if (error) {
       setError(error.message)
@@ -77,7 +84,7 @@ function JoinContent() {
           Locking in your username
         </h1>
         <p className="text-lg text-brand-600 font-semibold mb-8">
-          @{user_name}
+          @{userName}
         </p>
 
         <p className="text-sm text-surface-500 mb-8 max-w-xs mx-auto leading-relaxed">
@@ -114,7 +121,7 @@ function JoinContent() {
   )
 }
 
-export default function JoinPage() {
+export default function CreatorJoinPage() {
   return (
     <Suspense fallback={
       <div className="flex min-h-screen items-center justify-center bg-white">
