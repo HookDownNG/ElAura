@@ -228,57 +228,72 @@ export function UgcPackageModal({
               packages.map((pkg, i) => (
                 <div
                   key={i}
-                  className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center rounded-xl border border-surface-200 bg-surface-50/80 p-3 sm:p-3.5 space-y-2 sm:space-y-0"
+                  className="flex flex-col gap-2 rounded-xl border border-surface-200 bg-surface-50/80 p-3 sm:p-3.5"
                 >
-                  <div className="flex-1 min-w-0">
-                    <label className="text-[10px] font-bold text-surface-400 sm:hidden block mb-1">
-                      PACKAGE NAME
-                    </label>
-                    <input
-                      type="text"
-                      value={pkg.label}
-                      onChange={(e) =>
-                        updatePackage(i, "label", e.target.value)
-                      }
-                      placeholder="Package name (e.g., 1x 30s UGC Video)"
-                      className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-surface-400 transition-colors min-h-11"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 sm:w-32">
+                  <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
+                    <div className="flex-1 min-w-0">
                       <label className="text-[10px] font-bold text-surface-400 sm:hidden block mb-1">
-                        RATE (₦)
+                        PACKAGE NAME
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-surface-400">
-                          ₦
-                        </span>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={
-                            pkg.price ? Number(pkg.price).toLocaleString("en-US") : ""
-                          }
-                          onChange={(e) => {
-                            const rawDigits = e.target.value.replace(/[^0-9]/g, "");
-                            updatePackage(
-                              i,
-                              "price",
-                              rawDigits ? Number(rawDigits) : 0,
-                            );
-                          }}
-                          placeholder="0"
-                          className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-surface-400 transition-colors min-h-11"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        value={pkg.label}
+                        onChange={(e) =>
+                          updatePackage(i, "label", e.target.value)
+                        }
+                        placeholder="Package name (e.g., 1x 30s UGC Video)"
+                        className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-surface-400 transition-colors min-h-11"
+                      />
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => removePackage(i)}
-                      className="text-surface-400 hover:text-red-500 transition-colors p-2.5 rounded-xl border border-surface-200 sm:border-0 bg-white sm:bg-transparent min-h-11 min-w-11 flex items-center justify-center shrink-0"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 sm:w-32">
+                        <label className="text-[10px] font-bold text-surface-400 sm:hidden block mb-1">
+                          RATE (₦)
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-surface-400">
+                            ₦
+                          </span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={
+                              pkg.price ? Number(pkg.price).toLocaleString("en-US") : ""
+                            }
+                            onChange={(e) => {
+                              const rawDigits = e.target.value.replace(/[^0-9]/g, "");
+                              updatePackage(
+                                i,
+                                "price",
+                                rawDigits ? Number(rawDigits) : 0,
+                              );
+                            }}
+                            placeholder="0"
+                            className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-surface-400 transition-colors min-h-11"
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removePackage(i)}
+                        className="text-surface-400 hover:text-red-500 transition-colors p-2.5 rounded-xl border border-surface-200 sm:border-0 bg-white sm:bg-transparent min-h-11 min-w-11 flex items-center justify-center shrink-0"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Sample Video URL */}
+                  <div className="pt-1.5 border-t border-surface-200/60">
+                    <input
+                      type="url"
+                      value={pkg.sample_video_url || ""}
+                      onChange={(e) =>
+                        updatePackage(i, "sample_video_url", e.target.value)
+                      }
+                      placeholder="Video Sample URL (e.g. YouTube / Loom link)"
+                      className="w-full rounded-xl border border-surface-200 bg-white px-3 py-2 text-[11px] font-medium text-surface-900 outline-none focus:border-surface-400 transition-colors min-h-10"
+                    />
                   </div>
                 </div>
               ))

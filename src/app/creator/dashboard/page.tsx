@@ -60,23 +60,31 @@ export default function CreatorDashboardPage() {
         return;
       }
 
-      // Fetch Profile
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
+      // Fetch Profile, Creator Record, Applications, and Matching Briefs concurrently in parallel
+      const [
+        { data: profileData },
+        { data: creatorData },
+        { data: appsData },
+        { data: briefsData },
+      ] = await Promise.all([
+        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("creators").select("*").eq("id", user.id).maybeSingle(),
+        supabase
+          .from("applications")
+          .select("*, campaign:campaigns(*)")
+          .eq("creator_id", user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("campaigns")
+          .select("*, brand:brands(*)")
+          .eq("status", "active")
+          .order("created_at", { ascending: false })
+          .limit(6),
+      ]);
 
       if (profileData) {
         setProfile(profileData);
       }
-
-      // Fetch Creator Record
-      const { data: creatorData } = await supabase
-        .from("creators")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
 
       if (creatorData) {
         setCreator(creatorData);
@@ -88,24 +96,9 @@ export default function CreatorDashboardPage() {
         }
       }
 
-      // Fetch My Applications
-      const { data: appsData } = await supabase
-        .from("applications")
-        .select("*, campaign:campaigns(*)")
-        .eq("creator_id", user.id)
-        .order("created_at", { ascending: false });
-
       if (appsData) {
         setApplications(appsData as Application[]);
       }
-
-      // Fetch Active Matching Briefs
-      const { data: briefsData } = await supabase
-        .from("campaigns")
-        .select("*, brand:brands(*)")
-        .eq("status", "active")
-        .order("created_at", { ascending: false })
-        .limit(6);
 
       if (briefsData) {
         setMatchingCampaigns(briefsData as Campaign[]);

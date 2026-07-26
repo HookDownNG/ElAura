@@ -5,6 +5,8 @@ import { ThemeProvider } from "next-themes";
 import { useState, type ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/toast";
 
+import { AuthProvider } from "@/lib/auth-context";
+
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
     () =>
@@ -27,7 +29,9 @@ export function Providers({ children }: { children: ReactNode }) {
         enableSystem={false}
         disableTransitionOnChange
       >
-        <ToastProvider>{children}</ToastProvider>
+        <AuthProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

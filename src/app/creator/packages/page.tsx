@@ -10,10 +10,12 @@ import {
   Bot,
   Sparkles,
   Clapperboard,
+  Play,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { GlobalLoader } from "@/components/ui/global-loader";
 import { UGC_PACKAGE_TEMPLATES } from "@/components/creator/ugc-package-modal";
+import { VideoSampleModal } from "@/components/storefront/video-sample-modal";
 import type {
   Creator,
   CreatorPackage,
@@ -34,6 +36,10 @@ export default function CreatorPackagesPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [previewVideo, setPreviewVideo] = useState<{
+    url: string;
+    title: string;
+  } | null>(null);
 
   useEffect(() => {
     async function loadPackagesData() {
@@ -46,23 +52,15 @@ export default function CreatorPackagesPage() {
         return;
       }
 
-      // Load Profile
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
+      // Load Profile and Creator concurrently in parallel
+      const [{ data: profileData }, { data: creatorData }] = await Promise.all([
+        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("creators").select("*").eq("id", user.id).maybeSingle(),
+      ]);
 
       if (profileData) {
         setProfile(profileData);
       }
-
-      // Load Creator
-      const { data: creatorData } = await supabase
-        .from("creators")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
 
       if (creatorData) {
         setCreator(creatorData);
@@ -312,67 +310,102 @@ export default function CreatorPackagesPage() {
               {packages.map((pkg, i) => (
                 <div
                   key={i}
-                  className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center rounded-xl border border-surface-200 bg-surface-50/60 p-3.5 sm:p-4 space-y-2 sm:space-y-0"
+                  className="flex flex-col gap-3 rounded-xl border border-surface-200 bg-surface-50/60 p-3.5 sm:p-4"
                 >
-                  {/* Package Title */}
-                  <div className="flex-1 min-w-0">
-                    <label className="text-[10px] font-bold text-surface-400 block mb-1">
-                      PACKAGE TITLE
-                    </label>
-                    <input
-                      type="text"
-                      value={pkg.label}
-                      onChange={(e) =>
-                        updatePackage(i, "label", e.target.value)
-                      }
-                      placeholder="Package name (e.g., 1x 30s UGC Video Ad)"
-                      className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-brand-400 transition-colors min-h-11"
-                    />
-                  </div>
-
-                  {/* Rate / Price Input with Comma Formatting */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-full sm:w-36">
+                  <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                    {/* Package Title */}
+                    <div className="flex-1 min-w-0">
                       <label className="text-[10px] font-bold text-surface-400 block mb-1">
-                        RATE (₦)
+                        PACKAGE TITLE
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-surface-400">
-                          ₦
-                        </span>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={
-                            pkg.price
-                              ? Number(pkg.price).toLocaleString("en-US")
-                              : ""
-                          }
-                          onChange={(e) => {
-                            const rawDigits = e.target.value.replace(
-                              /[^0-9]/g,
-                              "",
-                            );
-                            updatePackage(
-                              i,
-                              "price",
-                              rawDigits ? Number(rawDigits) : 0,
-                            );
-                          }}
-                          placeholder="0"
-                          className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-brand-400 transition-colors min-h-11"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        value={pkg.label}
+                        onChange={(e) =>
+                          updatePackage(i, "label", e.target.value)
+                        }
+                        placeholder="Package name (e.g., 1x 30s UGC Video Ad)"
+                        className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-brand-400 transition-colors min-h-11"
+                      />
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => removePackage(i)}
-                      className="text-surface-400 hover:text-red-600 transition-colors p-2.5 rounded-xl border border-surface-200 bg-white sm:bg-transparent min-h-11 min-w-11 flex items-center justify-center shrink-0 mt-4 sm:mt-0"
-                      title="Remove Package"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    {/* Rate / Price Input with Comma Formatting */}
+                    <div className="flex items-center gap-2">
+                      <div className="w-full sm:w-36">
+                        <label className="text-[10px] font-bold text-surface-400 block mb-1">
+                          RATE (₦)
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-surface-400">
+                            ₦
+                          </span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={
+                              pkg.price
+                                ? Number(pkg.price).toLocaleString("en-US")
+                                : ""
+                            }
+                            onChange={(e) => {
+                              const rawDigits = e.target.value.replace(
+                                /[^0-9]/g,
+                                "",
+                              );
+                              updatePackage(
+                                i,
+                                "price",
+                                rawDigits ? Number(rawDigits) : 0,
+                              );
+                            }}
+                            placeholder="0"
+                            className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-7 pr-3 text-xs font-bold text-surface-900 outline-none focus:border-brand-400 transition-colors min-h-11"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => removePackage(i)}
+                        className="text-surface-400 hover:text-red-600 transition-colors p-2.5 rounded-xl border border-surface-200 bg-white sm:bg-transparent min-h-11 min-w-11 flex items-center justify-center shrink-0 mt-4 sm:mt-0"
+                        title="Remove Package"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Video Sample URL Row */}
+                  <div className="pt-2 border-t border-surface-200/80 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-bold text-surface-500 block">
+                        VIDEO SAMPLE URL (YOUTUBE / LOOM / MP4 LINK)
+                      </label>
+                      {pkg.sample_video_url && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setPreviewVideo({
+                              url: pkg.sample_video_url!,
+                              title: pkg.label,
+                            })
+                          }
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-600 hover:text-brand-700 transition-colors"
+                        >
+                          <Play className="h-3 w-3 fill-current" />
+                          <span>Preview Video</span>
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      type="url"
+                      value={pkg.sample_video_url || ""}
+                      onChange={(e) =>
+                        updatePackage(i, "sample_video_url", e.target.value)
+                      }
+                      placeholder="https://youtube.com/watch?v=... or Loom / MP4 link"
+                      className="w-full rounded-xl border border-surface-200 bg-white px-3.5 py-2.5 text-xs font-medium text-surface-900 outline-none focus:border-brand-400 transition-colors min-h-11"
+                    />
                   </div>
                 </div>
               ))}
@@ -380,6 +413,14 @@ export default function CreatorPackagesPage() {
           )}
         </div>
       </div>
+
+      {/* In-App Video Sample Preview Modal */}
+      <VideoSampleModal
+        isOpen={!!previewVideo}
+        onClose={() => setPreviewVideo(null)}
+        videoUrl={previewVideo?.url || null}
+        packageTitle={previewVideo?.title}
+      />
 
       {/* Mobile Floating Bottom Sticky Save Bar */}
       <div className="sm:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-surface-200 p-3 shadow-xl">

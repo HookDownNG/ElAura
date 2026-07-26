@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,12 +21,12 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { signOut } from "@/lib/auth-actions";
-import type { Profile } from "@/types";
+import { useAuth } from "@/lib/auth-context";
 
 export function CreatorNavbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const { profile } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingAccount, setDeletingAccount] = useState(false);
@@ -35,34 +35,12 @@ export function CreatorNavbar() {
 
   const supabase = createClient();
 
-  useEffect(() => {
-    async function loadProfile() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (data) {
-          setProfile(data);
-        }
-      }
-    }
-
-    loadProfile();
-  }, [supabase]);
-
   const navLinks = [
     { href: "/creator/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/creator/packages", label: "Packages", icon: Package },
     { href: "/campaigns", label: "Briefs", icon: Megaphone },
     { href: "/contracts", label: "Contracts", icon: FileText },
-    { href: "/settings", label: "Settings", icon: Settings },
+    { href: "/creator/settings", label: "Settings", icon: Settings },
   ];
 
   const initials = profile?.full_name
@@ -75,7 +53,7 @@ export function CreatorNavbar() {
 
   const copyStorefrontLink = () => {
     if (!profile?.user_name) return;
-    const url = `${window.location.origin}/${profile.user_name}`;
+    const url = `${window.location.origin}/creator/${profile.user_name}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
@@ -187,7 +165,7 @@ export function CreatorNavbar() {
           <div className="flex items-center gap-2.5">
             {profile?.user_name && (
               <a
-                href={`/${profile.user_name}`}
+                href={`/creator/${profile.user_name}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 rounded-xl border border-surface-200 bg-surface-50 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-surface-700 hover:bg-surface-100 transition-colors min-h-10"
@@ -251,7 +229,7 @@ export function CreatorNavbar() {
                       </button>
 
                       <a
-                        href={`/${profile.user_name}`}
+                        href={`/creator/${profile.user_name}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setDropdownOpen(false)}
@@ -264,7 +242,7 @@ export function CreatorNavbar() {
                   )}
 
                   <Link
-                    href="/settings"
+                    href="/creator/settings"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium text-surface-700 hover:bg-surface-100 transition-colors min-h-10"
                   >

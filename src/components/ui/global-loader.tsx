@@ -67,5 +67,3 @@ export function GlobalLoader({
     </div>
   );
 }
-
-export default GlobalLoader;

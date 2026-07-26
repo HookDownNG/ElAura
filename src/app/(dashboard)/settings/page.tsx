@@ -37,32 +37,20 @@ export default function SettingsPage() {
         return;
       }
 
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+      const [{ data: prof }, { data: cp }, { data: bp }] = await Promise.all([
+        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("creators").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("brands").select("*").eq("id", user.id).maybeSingle(),
+      ]);
+
       if (!prof?.role) {
         router.push("/onboarding");
         return;
       }
-      setProfile(prof);
 
-      if (prof.role === "creator") {
-        const { data: cp } = await supabase
-          .from("creators")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-        setCreatorProfile(cp);
-      } else if (prof.role === "brand") {
-        const { data: bp } = await supabase
-          .from("brands")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-        setBrandProfile(bp);
-      }
+      setProfile(prof);
+      if (prof.role === "creator" && cp) setCreatorProfile(cp);
+      if (prof.role === "brand" && bp) setBrandProfile(bp);
 
       setLoading(false);
     }
@@ -71,6 +59,7 @@ export default function SettingsPage() {
 
   async function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     setSaving(true);
 
     const {
@@ -78,7 +67,6 @@ export default function SettingsPage() {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    const formData = new FormData(e.currentTarget);
     const fullName = formData.get("full_name") as string;
 
     const { error: profErr } = await supabase
