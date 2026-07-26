@@ -60,7 +60,10 @@ export default function DashboardPage() {
         router.push("/onboarding");
         return;
       }
-      setProfile(prof);
+      if (prof.role === "creator") {
+        router.push("/creator/dashboard");
+        return;
+      }
 
       if (prof.role === "brand") {
         const { data: camps } = await supabase

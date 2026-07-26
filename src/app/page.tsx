@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { LandingNavbar } from "@/components/layout/landing-navbar";
+import { LandingFooter } from "@/components/layout/landing-footer";
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 antialiased overflow-x-hidden">
+      <LandingNavbar />
+
       {/* Dynamic Keyframes injected so you don't mess up your tailwind config */}
       <style
         dangerouslySetInnerHTML={{
@@ -358,6 +362,7 @@ const LandingPage = () => {
           ))}
         </div>
       </section>
+
       {/* --- CTA Section --- */}
       <section className="bg-gray-950 text-white py-24 px-6 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.15),transparent)] pointer-events-none" />
@@ -375,6 +380,8 @@ const LandingPage = () => {
           </button>
         </div>
       </section>
+
+      <LandingFooter />
     </div>
   );
 };
