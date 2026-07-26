@@ -16,6 +16,8 @@ import {
   AlertTriangle,
   Copy,
   Check,
+  Package,
+  ArrowLeft,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { signOut } from "@/lib/auth-actions";
@@ -57,6 +59,7 @@ export function CreatorNavbar() {
 
   const navLinks = [
     { href: "/creator/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/creator/packages", label: "Packages", icon: Package },
     { href: "/campaigns", label: "Briefs", icon: Megaphone },
     { href: "/contracts", label: "Contracts", icon: FileText },
     { href: "/settings", label: "Settings", icon: Settings },
@@ -130,8 +133,20 @@ export function CreatorNavbar() {
       {/* Top App Header */}
       <header className="sticky top-0 z-40 border-b border-surface-200 bg-white/95 backdrop-blur-md">
         <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Brand Logo & Studio Tag */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          {/* Brand Logo & Studio Tag + Dynamic Back Button */}
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            {pathname !== "/creator/dashboard" && (
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-surface-200 bg-surface-50 text-surface-600 hover:text-surface-900 hover:bg-surface-100 transition-colors shrink-0 min-h-9"
+                title="Go Back"
+                aria-label="Go Back"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+            )}
+
             <Link href="/creator/dashboard" className="flex items-center gap-2 shrink-0">
               <Image
                 src="/icon.png"
@@ -142,9 +157,6 @@ export function CreatorNavbar() {
               />
               <span className="font-black text-lg sm:text-xl tracking-tight text-surface-900">
                 ElAura
-              </span>
-              <span className="inline-flex items-center rounded-full bg-brand-50 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold text-brand-700 border border-brand-100">
-                Studio
               </span>
             </Link>
 
