@@ -20,3 +20,11 @@
 - **No Unused Variables:** Never leave declared variables, parameters, or types unused.
 - **Naming Exceptions:** If an argument or variable _must_ be declared but is intentionally unused (e.g., in a signature or callback), prefix it with an underscore (e.g., `_req`, `_index`).
 - **Pre-Output Self-Check:** Before completing any file edit, verify that every imported module and declared variable in the file is actively referenced.
+
+# Style & Color Palette Rules
+
+## Strict Global CSS & Theme Usage
+
+- **Single Source of Truth:** Only use design tokens, brand colors, and utility variables defined in `app/globals.css` .
+- **No Direct Color Hardcoding:** Never hardcode raw hex values, RGB/HSL strings, or inline color definitions directly inside JSX/TSX component files (e.g., avoid `bg-[#121212]`, `text-[#0055FF]`, or `style={{ color: '#...' }}`).
+- **Adding New Colors:** If a component requires a new color or design token that does not exist in the current configuration, you MUST add the CSS variable / theme definition directly to `globals.css` first, then reference its generated class (e.g., `bg-brand-primary`) in the component.

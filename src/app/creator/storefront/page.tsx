@@ -14,7 +14,7 @@ const NICHE_OPTIONS = [
 ]
 
 const CATEGORY_OPTIONS = [
-  { value: "human_ugc", label: "Human UGC Creator", desc: "On-camera filming, unboxing, real presenter", icon: User },
+  { value: "human_ugc", label: "On-Camera UGC Creator", desc: "On-camera filming, unboxing, real presenter", icon: User },
   { value: "ai_ugc", label: "AI UGC Creator", desc: "AI Avatars, AI Voiceovers, AI Video Generation", icon: Bot },
   { value: "hybrid", label: "Hybrid UGC Creator", desc: "Mix of real human filming and AI tools", icon: Sparkles },
 ] as const
